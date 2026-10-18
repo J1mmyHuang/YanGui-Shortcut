@@ -1,0 +1,68 @@
+name: Check and rebuild ShanNian
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-shortcut.yml'
+      - 'ci/**'
+      - 'spec/**'
+      - 'preview/**'
+      - 'README.md'
+      - 'LOCAL_BUILD.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shannian-build
+  cancel-in-progress: false
+
+jobs:
+  source-check:
+    name: Source and offline checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Validate source package
+        run: python3 ci/verify_package.py
+      - name: Python syntax check
+        run: python3 -m py_compile ci/*.py
+      - name: Check existing preview
+        if: hashFiles('preview/test_build.py') != ''
+        run: |
+          python3 ci/validate_plist.py preview/ShanNian.xml
+          python3 -m unittest discover -s preview -p 'test_*.py' -v
+
+  build-source:
+    name: Rebuild unsigned source
+    if: github.event_name == 'workflow_dispatch'
+    needs: source-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Prepare source output
+        run: |
+          mkdir -p dist
+          if [ -f preview/build_shannian.py ]; then
+            python3 preview/build_shannian.py
+            python3 ci/validate_plist.py preview/ShanNian.xml
+            cp preview/ShanNian.xml dist/ShanNian.xml
+            cp preview/FEATURES.md dist/FEATURES.md
+            printf '%s\n' 'Unsigned XML rebuilt. Apple signing and iPhone testing must be completed separately; see LOCAL_BUILD.md.' > dist/RESULT.txt
+          else
+            cp ci/BUILD_PROMPT.md dist/BUILD_PROMPT.md
+            printf '%s\n' 'No generator snapshot exists in this revision. Use your chosen AI agent with BUILD_PROMPT.md to build the XML.' > dist/RESULT.txt
+          fi
+          if [ -f LICENSE ]; then cp LICENSE dist/LICENSE; fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ShanNian-build-source
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
