@@ -2,7 +2,7 @@
 
 一个基于 iPhone Action Button 的中文语音助手，使用 Apple 原生的**备忘录、日历和提醒事项**。AI 理解自然语言，真正的创建和查询由设备上的快捷指令动作完成。
 
-**官方版本免费提供，采用 [AGPL-3.0-or-later](LICENSE) 许可证。** 官方仓库：[J1mmyHuang/ShanNian-Shortcut](https://github.com/J1mmyHuang/ShanNian-Shortcut)。
+**官方版本免费提供。** 官方仓库：[J1mmyHuang/ShanNian-Shortcut](https://github.com/J1mmyHuang/ShanNian-Shortcut)。
 
 > **当前为实验性测试版。** 已生成 Apple 签名文件，26项离线测试通过；尚未完成 iPhone 实测，Notes 动作仍未通过插件校验，可能阻止流程运行。仅日期、没有具体时刻的提醒尚未实现。请先阅读[功能与限制](preview/FEATURES.md)。
 
@@ -10,14 +10,16 @@
 
 | 你想做什么 | 入口 | 需要什么 |
 | --- | --- | --- |
-| 下载后直接试用 | [下载已签名的 ShanNian.shortcut](preview/ShanNian.shortcut?raw=true) | iPhone，以及自己选择的模型服务的 API 配置；无需 AI Agent 或重新构建 |
+| 下载后直接试用 | [下载已签名的 ShanNian.shortcut](https://github.com/J1mmyHuang/ShanNian-Shortcut/releases/download/v0.1.0-preview.1/ShanNian.shortcut) | iPhone，以及自己选择的模型服务的 API 配置；无需 AI Agent 或重新构建 |
 | 审阅或重建现有测试版 | [本地构建指南](LOCAL_BUILD.md) | Python 3.10+；重新签名需要 Mac |
 | 让 AI Agent 修改或继续完善 | [通用构建任务](ci/BUILD_LOCAL_PROMPT.md) | 能读写仓库、运行终端的代码 Agent；动作资料与验证工具；签名需要 Mac |
 | 在 GitHub 上自动生成 | [Actions 构建页面](https://github.com/J1mmyHuang/ShanNian-Shortcut/actions/workflows/build-shortcut.yml) | 当前附带的流程使用 AI Agent Action，需要单独的构建用 API Key |
 
 ## 免构建试用
 
-1. 下载[已签名测试版](preview/ShanNian.shortcut?raw=true)，通过隔空投送或 iCloud Drive 在 iPhone 打开，审查动作后添加到「快捷指令」。私有仓库的下载需要相应访问权限。
+当前版本：[v0.1.0-preview.1 发布页](https://github.com/J1mmyHuang/ShanNian-Shortcut/releases/tag/v0.1.0-preview.1)。在 Assets 中下载 `ShanNian.shortcut`；完整源码与使用说明包、SHA-256 校验文件也在同一发布页。
+
+1. 下载[已签名测试版](https://github.com/J1mmyHuang/ShanNian-Shortcut/releases/download/v0.1.0-preview.1/ShanNian.shortcut)，通过隔空投送或 iCloud Drive 在 iPhone 打开，审查动作后添加到「快捷指令」。私有仓库的下载需要相应访问权限。
 2. 首次先从快捷指令 App 运行并选择文字输入，检查恢复备忘录动作是否可用，再逐项测试创建和查询。
 3. 每次运行填写自己的 **API Base URL、Model、API Key**。支持 OpenAI-compatible Chat Completions API；使用提供方支持的模型与密钥。构建阶段的 AI 登录不会自动提供运行时 API 额度。
 4. 按系统提示授予所需权限。验证后到「设置 → 操作按钮 → 快捷指令 → 闪念」绑定。
@@ -65,7 +67,14 @@ GitHub Actions 负责检查仓库内容。手动触发时，有生成器快照�
 - **发送给模型的数据**：原话、澄清内容、设备当地时间和时区；认证 Key 发送到同一自选 API 提供方。当前测试版查得的本机笔记、日历和提醒记录仅在本机展示。
 - **原话恢复**：当前版本联网前先显示原话，经明确同意后保存一条恢复备忘录，以应对后续网络或权限动作直接中断。恢复笔记按备忘录/iCloud 设置同步；取消则结束。Notes 动作失败时可能无法保存。
 - **Apple 签名**：本机发起 `anyone` 签名，Apple 会收到快捷指令副本验证。公开证书中有不透明标识，不应将签名视为匿名发布或功能安全认证。详见[签名说明](preview/SIGNING.md)。
-- **构建产物**：源码、签名文件及摘要在 `preview/`；临时输出放在被 Git 忽略的 `dist/`。不要提交真实密钥、Apple 登录凭据或个人应用数据。
+- **构建产物**：面向使用者的下载文件在 GitHub Releases；源码、签名快照及摘要在 `preview/`；临时输出放在被 Git 忽略的 `dist/`。不要提交真实密钥、Apple 登录凭据或个人应用数据。
+
+## 相关文件
+
+- [功能规格](spec/闪念_Shortcuts_构建规格.md)
+- [本地构建指南](LOCAL_BUILD.md)与[通用 Agent 构建任务](ci/BUILD_LOCAL_PROMPT.md)
+- [源 XML](preview/ShanNian.xml)、[生成器](preview/build_shannian.py)、[构建摘要](preview/build-manifest.json)
+- [Shortcuts Playground](https://github.com/viticci/shortcuts-playground-plugin)
 
 ## 许可证
 
@@ -74,10 +83,3 @@ Copyright (C) 2026 J1mmyHuang.
 本项目采用 **GNU Affero General Public License 第3版或任何后续版本**，SPDX 标识为 **`AGPL-3.0-or-later`**。完整条款见 [LICENSE](LICENSE)。
 
 官方版本免费提供；AGPL 仍允许遵守许可证的商业使用与收费分发。快捷指令中的提示用于标明官方来源，不增加禁止商业使用的许可条件。源码提供、修改和分发义务以许可证为准。第三方工具和资料保留各自的许可证与署名。
-
-## 相关文件
-
-- [功能规格](spec/闪念_Shortcuts_构建规格.md)
-- [本地构建指南](LOCAL_BUILD.md)与[通用 Agent 构建任务](ci/BUILD_LOCAL_PROMPT.md)
-- [源 XML](preview/ShanNian.xml)、[生成器](preview/build_shannian.py)、[构建摘要](preview/build-manifest.json)
-- [Shortcuts Playground](https://github.com/viticci/shortcuts-playground-plugin)
