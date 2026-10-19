@@ -1,23 +1,91 @@
-# Mac 本地构建「闪念」
+# 本地构建「闪念」
 
-选择能够读写仓库并运行终端的 AI 编码 Agent，使用自己的模型配置。
-准备 Python 3.10+、Shortcuts Playground 动作资料，以及用于最终签名的 Mac。
+只想试用时，可直接下载 GitHub Releases 中的[已签名测试版](https://github.com/J1mmyHuang/ShanNian-Shortcut/releases/tag/v0.1.0-preview.1)，无需安装 AI Agent 或准备 Mac。当前 Notes 兼容性、仅日期提醒等限制仍然存在，详见 [FEATURES.md](preview/FEATURES.md)。
 
-## 构建任务
+本指南提供两条本地路线：使用现有 Python 生成器重建快照，或让你选择的 AI 编码 Agent 继续完善。选择具备文件和终端能力的 AI Agent 即可；最终 Apple 签名需要 Mac。
 
-让 Agent 阅读 `ci/BUILD_LOCAL_PROMPT.md`、`spec/闪念_Shortcuts_构建规格.md`，
-以及 Shortcuts Playground 的 `SKILL.md`、动作格式、示例和验证脚本，
-生成并验证 `dist/ShanNian.xml`，记录六项能力的真实状态及未解决问题。
-Shortcuts Playground 可通过 Agent 的插件机制接入，也可获取公开参考源直接使用。
+## 准备环境
 
-## 签名与导入
+1. 准备 Python 3.10+。重新签名需在有 Apple「快捷指令」和适当 Apple Account 登录环境的 Mac 上完成。
+2. 在终端检查：
 
-在有 Apple 快捷指令环境的 Mac 上归档源 XML，再执行：
+   ```sh
+   python3 --version
+   shortcuts --help
+   ```
+
+3. 克隆仓库并进入目录；私有仓库需要先取得 GitHub 访问权限：
+
+   ```sh
+   git clone https://github.com/J1mmyHuang/ShanNian-Shortcut.git
+   cd ShanNian-Shortcut
+   ```
+
+构建现有快照和离线测试不调用模型，不需要 API Key。使用 AI Agent 改造时，其模型登录、订阅或 API 费用由你选择的工具决定。iPhone 上运行的 BYOK 模型服务需要单独配置。
+
+## 重建现有测试版（无需 AI Agent）
+
+在仓库根目录执行：
 
 ```sh
-shortcuts sign --mode anyone --input dist/ShanNian.xml --output dist/ShanNian.shortcut
+python3 preview/build_shannian.py
+python3 -m unittest discover -s preview -p 'test_*.py' -v
+python3 ci/validate_plist.py preview/ShanNian.xml
+plutil -lint preview/ShanNian.xml
 ```
 
-确认文件非空，再通过隔空投送或 iCloud Drive 在 iPhone 导入和测试。
-签名和静态检查不代表六项动作已通过真机验证。运行时 BYOK 需要使用者单独配置。
-不要把真实密钥、Apple 登录凭据或个人应用记录写入仓库或待分享的快捷指令。
+这会更新 `preview/ShanNian.xml`，保留当前实现及其已知限制。26项测试是离线模拟，不是 Apple 的实际动作引擎。完整 Shortcuts Playground 检查仍有 Notes 错误，见 `preview/validation-ios27.log`；重建不会自动修复这些问题，也不会更新旧签名。
+
+如需为重建后的 XML 生成新的**测试版**签名，在 Mac 上执行：
+
+```sh
+mkdir -p dist
+cp preview/ShanNian.xml dist/ShanNian.xml
+cp dist/ShanNian.xml dist/ShanNian-unsigned-backup.xml
+shortcuts sign --mode anyone --input dist/ShanNian.xml --output dist/ShanNian.shortcut
+test -s dist/ShanNian.shortcut
+```
+
+签名失败时保留 XML 和错误日志；有 Shortcuts Playground 时可使用其 `scripts/sign_shortcut.sh`，该脚本会归档源文件并处理部分 plist 格式重试。签名成功不表示 Notes 兼容性已解决。
+
+## 使用任意具备工具能力的 AI Agent
+
+选择能读取仓库、编辑文件并执行终端命令的 AI 编码 Agent，在仓库目录打开它，使用该工具已有的模型配置。
+
+Agent 需要 Shortcuts Playground 的动作格式、示例和验证脚本。可使用该 Agent 支持的插件安装方式；也可直接获取公开参考源：
+
+```sh
+git clone https://github.com/viticci/shortcuts-playground-plugin.git .ci-tools/shortcuts-playground
+```
+
+在参考仓库中查找 Shortcuts Playground 的 `SKILL.md`，其同目录下包含动作资料、示例和 `scripts/`。这里获取的是上游当前版本，未承诺与已发布快照使用的1.2.1完全一致。请记录实际使用的版本，并按其文档执行验证。
+
+给 Agent 发送：
+
+```text
+读取并执行 ci/BUILD_LOCAL_PROMPT.md，依据 spec/闪念_Shortcuts_构建规格.md
+以及 Shortcuts Playground 的资料，构建、验证并签名「闪念」。
+优先复用 preview/ 中的生成器和测试，核对已有未解决问题。
+请报告实际运行的检查、每项能力的状态和所有未验证内容。
+不要把真实 API Key 写入仓库或快捷指令，不要读取个人应用数据库来猜动作格式。
+```
+
+本地通用任务见 [ci/BUILD_LOCAL_PROMPT.md](ci/BUILD_LOCAL_PROMPT.md)。Agent 应按其宿主工具的方式读取动作资料并执行脚本；签名命令需在 Mac 执行。
+
+## 交付检查
+
+新的构建输出放在 `dist/`：
+
+- `ShanNian.xml`：可审阅的 XML/plist。
+- `ShanNian.shortcut`：仅当 Apple 签名成功且文件非空时存在。
+- `FEATURES.md`：六项能力的实现、验证状态、限制与实机测试清单。
+
+公开下载版快照位于 `preview/`。更新它时应同步源 XML、生成器、签名文件、相关日志及 `build-manifest.json` 摘要，并保留顶部免费开源和官方仓库的注释。项目许可证为 [AGPL-3.0-or-later](LICENSE)。
+
+`dist/` 被 Git 忽略，但仍不应向其中写入待分享的真实密钥或个人应用记录。签名时 Apple 会收到快捷指令副本；详见 [SIGNING.md](preview/SIGNING.md)。
+
+## 导入和测试
+
+通过隔空投送或 iCloud Drive 在 iPhone 打开已签名 `.shortcut`，审查动作后导入。先用文字输入测试恢复备忘录，再测试 Notes、Calendar、Reminders 的创建和查询，核对权限与日期。确认后在「设置 → 操作按钮 → 快捷指令 → 闪念」绑定。
+
+遇到未知动作或导入错误时，将具体错误反馈给维护者或你的 Agent。静态结构检查、离线测试和签名都不能代替 iPhone 实测。

@@ -1,10 +1,8 @@
 # Local macOS AI-agent task: iOS Shortcut 闪念
 
-You are an AI coding agent running locally on a Mac with repository file access and terminal tools.
-Use the agent's configured model service. Runtime BYOK on iPhone is configured separately by the recipient.
-Locate Shortcuts Playground's skill directory containing SKILL.md and scripts in an available plugin or reference checkout.
-Read its action schemas and examples, build a real XML plist, validate it, and sign with Apple's native tool on a Mac.
-Report missing dependencies and unverified behavior. Never upload Apple credentials or put real API keys in source.
+You are an AI coding agent running **locally on the user's Mac**, with permission to read/write this repository and execute terminal commands. Use the agent's existing configured model and authentication. Do not request or create a GitHub Actions API secret. Runtime BYOK on iPhone is configured separately by the recipient. The user wants a real iOS shortcut, not an implementation plan.
+
+Locate the Shortcuts Playground skill directory containing `SKILL.md` and `scripts/` through the agent's available plugin or a checkout under `.ci-tools/shortcuts-playground/`. Read its reference files and execute its scripts directly. If the reference is unavailable, report that missing dependency. Start from `preview/`'s existing generator, tests, and recorded Notes compatibility failures when practical; do not claim these are already resolved.
 
 Read fully:
 1. `spec/闪念_Shortcuts_构建规格.md` (the complete requirements)

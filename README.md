@@ -13,7 +13,7 @@
 | 下载后直接试用 | [下载已签名的 ShanNian.shortcut](https://github.com/J1mmyHuang/ShanNian-Shortcut/releases/download/v0.1.0-preview.1/ShanNian.shortcut) | iPhone，以及自己选择的模型服务的 API 配置；无需 AI Agent 或重新构建 |
 | 审阅或重建现有测试版 | [本地构建指南](LOCAL_BUILD.md) | Python 3.10+；重新签名需要 Mac |
 | 让 AI Agent 修改或继续完善 | [通用构建任务](ci/BUILD_LOCAL_PROMPT.md) | 能读写仓库、运行终端的代码 Agent；动作资料与验证工具；签名需要 Mac |
-| 在 GitHub 上自动生成 | [Actions 构建页面](https://github.com/J1mmyHuang/ShanNian-Shortcut/actions/workflows/build-shortcut.yml) | 当前附带的流程使用 AI Agent Action，需要单独的构建用 API Key |
+| 在 GitHub 上检查和重建 | [Actions 构建页面](https://github.com/J1mmyHuang/ShanNian-Shortcut/actions/workflows/build-shortcut.yml) | 使用已有生成器输出源 XML，无需模型构建密钥；签名在 Mac 完成 |
 
 ## 免构建试用
 
@@ -42,7 +42,7 @@
 
 ## 使用你习惯的 AI Agent
 
-能够读取文件、编辑代码、执行 Python/终端命令并使用 Shortcuts 动作资料的 AI 编码 Agent，都可以参与构建和维护；具体完成质量取决于模型能力、工具权限和验证结果。只有聊天能力的工具无法独立完成本机签名。
+选择能够读取文件、编辑代码、执行 Python/终端命令并使用 Shortcuts 动作资料的 AI 编码 Agent，即可参与构建和维护。具体完成质量取决于模型能力、工具权限和验证结果；本机签名需要终端执行能力。
 
 将仓库交给 Agent，并发送：
 
@@ -55,11 +55,13 @@
 
 [本地构建指南](LOCAL_BUILD.md) 提供无需 Agent 的重建步骤，以及通用 Agent 的准备方式。Shortcuts Playground 可通过适合该 Agent 的插件方式使用，也可读取其公开参考文件并直接运行 Python/签名脚本。最终签名依赖 **macOS 的 Apple `shortcuts` 工具**，与选择哪家 Agent 无关。
 
-## 自动检查与构建
+## 自动检查与重建
 
-GitHub Actions 负责检查仓库内容。手动触发时，有生成器快照就重建未签名 XML；
-尚无生成器的版本会提供构建任务说明。使用自己选择的 AI Agent 读取 `ci/BUILD_PROMPT.md` 完成构建。
-最终 Apple 签名在有登录环境的 Mac 上完成，不向 GitHub 上传 Apple 账户凭据。
+普通 push 会运行源文件检查和已有的离线行为测试，不调用模型，也不需要模型构建密钥。
+
+可在 [Actions 构建页面](https://github.com/J1mmyHuang/ShanNian-Shortcut/actions/workflows/build-shortcut.yml) 手动选择 **Run workflow**，使用仓库中已有的 Python 生成器重建 XML，并下载 `ShanNian-build-source` Artifact。这个产物是未签名源文件，最终签名需在自己的 Mac 上完成，步骤见[本地构建指南](LOCAL_BUILD.md)。
+
+需要改变功能时，将[通用构建任务](ci/BUILD_LOCAL_PROMPT.md)交给自己选择的 AI Agent。模型服务的登录和使用方式由该 Agent 的配置决定；仓库的自动流程负责检查和重建现有实现。
 
 ## 密钥、隐私与签名
 

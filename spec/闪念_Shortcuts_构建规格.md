@@ -82,7 +82,7 @@
 
 - 写入前尽量展示简短确认，或提供可关闭的确认选项；首次测试保持确认开启。
 - 明确说明输入文字、必要查询片段会发给自选 API 提供方；系统原始数据保留在 Apple App/iCloud。
-- 不要写入 第三方聊天记录库、Notion、Todoist、Drafts、Google Calendar 等第三方数据库。
+- 不要写入 第三方聊天记录库、Notion、Todoist、Drafts、Google Calendar 等数据库。
 - 首次执行时提示允许 Shortcuts 访问备忘录、日历、提醒事项、麦克风和网络（实际以系统弹窗为准）。
 - 每个主要分支有可读 Comment；变量必须正确连接。不要留下任何 Unknown Action/空必填字段/占位符。
 - 输出一个测试清单、一个快捷指令源文件和签名后的 `.shortcut` 文件。能在 Mac 测的内容先测；**真实 iOS 动作必须注明等待用户在 iPhone 上验证**。
@@ -110,9 +110,9 @@
 
 ## 获取构建参考资料
 
-使用具备仓库读写和终端能力的 AI Agent，按 Shortcuts Playground 的插件机制或公开参考源获取动作资料。
-查找包含 `SKILL.md` 与 `scripts/` 的技能目录，阅读格式和示例后构建、验证并在 Mac 签名。
-构建时记录每项能力的真实验证结果，不能用静态检查代替 iPhone 实测。
+使用任意具备仓库读写和终端能力的 AI Agent，读取[本地构建指南](../LOCAL_BUILD.md)和[通用构建任务](../ci/BUILD_LOCAL_PROMPT.md)。可按该 Agent 的插件机制接入 Shortcuts Playground，或获取其公开参考源，查找 `SKILL.md`、动作格式和验证脚本后直接使用。
+
+最终 `.shortcut` 文件需要在 Mac 上用 Apple 原生工具签名。构建过程应记录实际执行的验证、未实现功能和需要 iPhone 复核的动作；规格本身不代表已完成构建或签名。
 
 来源：
 - https://github.com/viticci/shortcuts-playground-plugin
