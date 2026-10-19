@@ -1,5 +1,9 @@
 # 闪念 · ShanNian Shortcut
 
+**本地构建：Mac + 具备文件和终端能力的 AI Agent。**
+
+
+
 一个基于 iPhone Action Button 的轻量语音助手。只访问三款 Apple 原生 App：**备忘录、日历、提醒事项**。AI 只负责理解自然语言，实际读写由 Shortcuts 的本机动作执行。
 
 > **当前状态：CI 构建工程已提交，完整 iPhone 快捷指令尚未生成或经过实机验证。** GitHub runner 上的苹果公开签名可能因无 iCloud 会话失败。
