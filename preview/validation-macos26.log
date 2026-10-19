@@ -1,0 +1,9 @@
+Validation failed:
+
+First failing action: index 0 (is.workflow.actions.comment)
+Snippet: {'UUID': 'C2FAE21E-ECB9-4CCD-A9D9-29BCBACB5D2E', 'WFCommentActionText': '闪念：中文听写或文字 → 原话恢复笔记 → 自选 API 解析 → 六项原生操作。一次一件事，所有写入确认。查询最多10条，时间范围最多31天。不会删除、更新或标记完成。网络或权限中断需从恢复笔记取回原话。API Key 每次输入，构建文件不含真实密钥。'}
+
+- AppIntent action missing AppIntentDescriptor at index 36: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 279: com.apple.mobilenotes.SharingExtension
+- Notes create action missing title/name parameter at index 36
+- Notes create action missing title/name parameter at index 279

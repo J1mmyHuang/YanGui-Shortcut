@@ -1,0 +1,31 @@
+test_all_six_actions_and_clarification_accept_real_json_strings (test_build.BuildContractTests) ... ok
+test_boolean_type_confusion_and_nonallowlisted_actions_fail (test_build.BuildContractTests) ... ok
+test_composite_operations_remain_visible_for_explicit_split_guard (test_build.BuildContractTests) ... ok
+test_epoch_action_uses_candidate_as_end_date (test_build.BuildContractTests) ... ok
+test_iso_contract_checks_real_calendar_dates_and_offset_limits (test_build.BuildContractTests) ... ok
+test_malformed_json_unescaped_controls_and_surrogates_fail (test_build.BuildContractTests) ... ok
+test_missing_duplicate_extra_or_reordered_fields_fail_closed (test_build.BuildContractTests) ... ok
+test_native_request_roundtrip_has_no_text_json_interpolation (test_build.BuildContractTests) ... ok
+test_no_item_type_list_sentinel_and_calendar_keyword_is_native_filter (test_build.BuildContractTests) ... ok
+test_only_allowed_app_actions_bounded_searches_and_confirmed_backup (test_build.BuildContractTests) ... ok
+test_runtime_key_is_asked_and_not_baked_into_source (test_build.BuildContractTests) ... ok
+test_api_error_and_bad_contract_do_not_reach_target_writes (test_runtime.GeneratedRuntimeTests) ... ok
+test_calendar_search_enforces_keyword_and_overlap_boundaries (test_runtime.GeneratedRuntimeTests) ... ok
+test_clarification_limit_stops_without_target_writes (test_runtime.GeneratedRuntimeTests) ... ok
+test_clarification_reuses_context_and_executes_exactly_once (test_runtime.GeneratedRuntimeTests) ... ok
+test_date_only_reminder_fails_closed_without_invented_time (test_runtime.GeneratedRuntimeTests) ... ok
+test_declining_backup_stops_before_network_and_any_write (test_runtime.GeneratedRuntimeTests) ... ok
+test_dictionary_choice_item_reaches_confirmed_note_write (test_runtime.GeneratedRuntimeTests) ... ok
+test_multiple_operations_are_all_rejected_before_target_writes (test_runtime.GeneratedRuntimeTests) ... ok
+test_note_search_reads_only_matching_synthetic_candidates (test_runtime.GeneratedRuntimeTests) ... ok
+test_positive_epoch_interval_creates_timed_calendar_event (test_runtime.GeneratedRuntimeTests) ... ok
+test_reminder_search_defaults_to_incomplete_and_filters_title (test_runtime.GeneratedRuntimeTests) ... ok
+test_reminder_search_range_excludes_upper_boundary_and_missing_due (test_runtime.GeneratedRuntimeTests) ... ok
+test_reversed_calendar_interval_performs_no_target_write (test_runtime.GeneratedRuntimeTests) ... ok
+test_timed_and_undated_reminders_use_distinct_native_parameters (test_runtime.GeneratedRuntimeTests) ... ok
+test_transport_abort_has_only_preconfirmed_recovery_note (test_runtime.GeneratedRuntimeTests) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 0.072s
+
+OK

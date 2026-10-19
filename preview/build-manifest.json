@@ -1,0 +1,30 @@
+{
+  "workflow_name": "闪念",
+  "action_count": 833,
+  "xml_bytes": 580919,
+  "xml_sha256": "3938e7563954af762c2a27090a2f46300aa238c40ebd53b79c0ec46a6cd1993c",
+  "plugin_version": "1.2.1",
+  "target": "iOS 27 (macOS 26 cross-check)",
+  "full_plugin_validation": "FAILED: Notes action catalog/schema conflict",
+  "real_device_tests": false,
+  "live_api_tests": false,
+  "signed_bytes": 85891,
+  "signed_sha256": "6de2de868d84ab94967bf329453b2f88e05f65f1cbcf59d7592c5bf120ec0112",
+  "signed_magic": "AEA1",
+  "signing_mode": "anyone",
+  "archive_matches_source": true,
+  "offline_tests": {
+    "passed": 26,
+    "failed": 0,
+    "apple_runtime": false
+  },
+  "plistlib": "PASS",
+  "plutil": "PASS",
+  "source": "ShanNian.xml",
+  "signed": "ShanNian.shortcut",
+  "build_status": "preview: Notes validation unresolved; iPhone untested",
+  "signed_authentication_keys": [
+    "SigningCertificateChain"
+  ],
+  "certificate_contains_email": false
+}
