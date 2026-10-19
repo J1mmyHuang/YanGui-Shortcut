@@ -4,13 +4,13 @@
 
 **官方版本免费提供。** 官方仓库：[J1mmyHuang/ShanNian-Shortcut](https://github.com/J1mmyHuang/ShanNian-Shortcut)。
 
-> **当前为实验性测试版。** 已生成 Apple 签名文件，40项离线测试通过；尚未完成 iPhone 实测，Notes 动作仍未通过插件校验，可能阻止流程运行。请先阅读[功能与限制](preview/FEATURES.md)。
+> **当前为实验性测试版。** 已生成 Apple 签名文件，85 项离线测试通过；在 Mac 的 Shortcuts 引擎上实测了备忘录（Mac 上只生成文本）、日历（有时间、全天）、提醒（带时刻、仅日期、模糊时间）和清单，不再出现「请为此操作中的每个参数选取值」（[实测记录](preview/validation-mac-engine.log)）。尚未完成 iPhone 实测，Notes 动作仍未通过插件校验。请先阅读[功能与限制](preview/FEATURES.md)。
 
 ## 选择使用方式
 
 | 你想做什么 | 入口 | 需要什么 |
 | --- | --- | --- |
-| 下载后直接试用 | [仓库中的已签名 ShanNian.shortcut](preview/ShanNian.shortcut) | iPhone，以及自己选择的模型服务的 Base URL、模型 ID、API Key；无需 AI Agent 或重新构建 |
+| 下载后直接试用 | [仓库中的已签名 ShanNian.shortcut](preview/ShanNian.shortcut) | iPhone，以及自己选择的模型服务的 API 协议、Base URL、API Key、模型 ID；无需 AI Agent 或重新构建 |
 | 审阅或重建现有测试版 | [本地构建指南](LOCAL_BUILD.md) | Python 3.10+；重新签名需要 Mac |
 | 让 AI Agent 修改或继续完善 | [通用构建任务](ci/BUILD_LOCAL_PROMPT.md) | 能读写仓库、运行终端的代码 Agent；动作资料与验证工具；签名需要 Mac |
 | 在 GitHub 上检查和重建 | [Actions 构建页面](https://github.com/J1mmyHuang/ShanNian-Shortcut/actions/workflows/build-shortcut.yml) | 使用已有生成器输出源 XML，无需模型构建密钥；签名在 Mac 完成 |
@@ -19,7 +19,7 @@
 
 下载[已签名测试版](preview/ShanNian.shortcut)，通过隔空投送或 iCloud Drive 在 iPhone 打开。GitHub Releases 的 [v0.1.0-preview.1](https://github.com/J1mmyHuang/ShanNian-Shortcut/releases/tag/v0.1.0-preview.1) 是上一版，流程不同；新版发布后这里改为发布页。私有仓库的下载需要相应访问权限。
 
-1. 打开文件后，快捷指令 App 依次询问 **Base URL、模型 ID、API Key**。填写自己选择的模型服务的信息，支持 OpenAI-compatible Chat Completions API。这三项也是快捷指令最前面的三个文本动作，之后点开即可修改。
+1. 打开文件后，快捷指令 App 依次询问 **API 协议、Base URL、API Key、模型 ID**。协议填 `openai`（OpenAI compatible）或 `anthropic`（Anthropic compatible）；模型 ID 可以留空，运行时从服务的 `/models` 列表里选。这四项也是快捷指令最前面的四个文本动作，之后点开即可修改。
 2. 审查动作后添加，先在快捷指令 App 里运行一次，按系统提示授予麦克风、备忘录、日历、提醒事项等权限。
 3. 到「设置 → 操作按钮 → 快捷指令 → 闪念」绑定。
 4. 按一下操作按钮，直接说话；说完点按屏幕上的完成。通知会汇总每一项记到了哪里。
@@ -36,11 +36,11 @@
 | Apple Calendar | `calendar.create` | `calendar.search` |
 | Apple Reminders | `reminder.create` | `reminder.search` |
 
-**智能分类**：AI 判断每个事项的去向。有明确日期或时间的会议、活动进日历；要去做的待办和提醒进提醒事项；想法、信息和拿不准的内容进备忘录。**自动分段**：一次听写里的多件事各自归类，按顺序全部写入。日期说不准时不猜，改记为备忘录并保留原话。
+**智能分类**：AI 判断每个事项的去向。有明确日期或时间的会议、活动进日历（「提醒我下午3点有会议」也进日历，只说钟点时日期按今天）；要去做的待办进提醒事项；想法、信息和拿不准的内容进备忘录；购物清单这类并列条目写成备忘录里可以点按勾选的待办项。**自动分段**：一次听写里的多件事各自归类，按顺序全部写入。日期说不准时不猜，改记为备忘录并保留原话。
 
 查询最多10条，无结果时直接说明。没有删除、修改现有记录或标记完成的功能。详细实现状态和 iPhone 测试清单见 [FEATURES.md](preview/FEATURES.md)。
 
-**接入方式**：API Key。Anthropic 要求第三方产品使用 API Key，OpenAI 的「Sign in with ChatGPT」需要本地回环监听，快捷指令无法提供，所以 OAuth 登录未接入，依据见 [FEATURES.md](preview/FEATURES.md#接入方式api-key)。
+**接入方式**：API Key，协议可选 OpenAI compatible 或 Anthropic compatible，请求格式见 [FEATURES.md](preview/FEATURES.md#接入方式api-key两种协议)。Anthropic 要求第三方产品使用 API Key，OpenAI 的「Sign in with ChatGPT」需要本地回环监听，快捷指令无法提供，所以 OAuth 登录未接入。API 出错时，弹窗会显示服务返回的错误原文。
 
 ## 使用你习惯的 AI Agent
 
@@ -77,7 +77,7 @@
 
 - [功能规格](spec/闪念_Shortcuts_构建规格.md)
 - [本地构建指南](LOCAL_BUILD.md)与[通用 Agent 构建任务](ci/BUILD_LOCAL_PROMPT.md)
-- [源 XML](preview/ShanNian.xml)、[生成器](preview/build_shannian.py)、[构建摘要](preview/build-manifest.json)
+- [源 XML](preview/ShanNian.xml)、[生成器](preview/build_shannian.py)、[构建摘要](preview/build-manifest.json)、[Mac 引擎实测记录](preview/validation-mac-engine.log)
 - [Shortcuts Playground](https://github.com/viticci/shortcuts-playground-plugin)
 
 ## 许可证

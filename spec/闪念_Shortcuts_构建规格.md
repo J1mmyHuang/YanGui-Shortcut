@@ -40,10 +40,12 @@
 
 ### 3. BYOK 配置与 API
 
-- 首次安装（导入快捷指令）时，通过**导入问题**明确要求用户填写 `API_BASE_URL`（示例 `https://api.openai.com/v1`）、`API_MODEL`、`API_KEY`。三项对应快捷指令最前面的三个文本动作，用户之后可以直接点开修改。XML 中这三项为空；不要假定用户使用特定厂商的密钥，也不要将真实密钥写入源码、日志或提示词。
+- 首次安装（导入快捷指令）时，通过**导入问题**明确要求用户填写 `API_PROTOCOL`（`openai` 或 `anthropic`）、`API_BASE_URL`（示例 `https://api.openai.com/v1`）、`API_KEY`、`API_MODEL`。四项对应快捷指令最前面的四个文本动作，用户之后可以直接点开修改。XML 中 Base URL、Key、模型为空；不要假定用户使用特定厂商的密钥，也不要将真实密钥写入源码、日志或提示词。
+- 模型 ID 可手填；留空时每次运行先请求服务的 `/models`（openai 协议 `<Base URL>/models`，anthropic 协议 `<根地址>/v1/models`），列出模型让用户选择，并提示把选中的 ID 填入配置以跳过选择。
 - API Key 保存在用户自己的快捷指令里，可能随 iCloud 同步；文档提示分享或导出前先清空。
 - 接入方式为 API Key。OAuth 登录未接入：Anthropic 要求第三方产品使用 API Key；OpenAI 的 Sign in with ChatGPT 需要本地回环监听，快捷指令无法提供。
-- 请求 OpenAI-compatible `POST <base_url>/chat/completions`，鉴权 `Authorization: Bearer <key>`，JSON 中使用 `model`, `messages`。若提供方不支持 JSON schema response format，则采用严格 JSON-only 提示词并校验结果。
+- openai 协议：`POST <base_url>/chat/completions`，鉴权 `Authorization: Bearer <key>`，JSON 中使用 `model`, `messages`。anthropic 协议：`POST <根地址>/v1/messages`，`x-api-key` 与 `anthropic-version` 头，JSON 中使用 `model`, `max_tokens`, `system`, `messages`，返回读第一个 `text` 内容块。若提供方不支持 JSON schema response format，则采用严格 JSON-only 提示词并校验结果。
+- API 失败时，向用户显示服务返回的错误原文、协议、请求地址和模型（不含密钥）。请求体中的字典、数组、数字条目必须使用真实导出的 `WFItemType` 编码（0 文本、1 字典、2 数组、3 数字、4 布尔）。
 - 用系统动作「获取 URL 内容」访问 API。要正确处理 HTTP 失败、非法 JSON 和空字段；不要把用户内容发送到任何其他域名。
 - 模型仅负责**意图分类、拆分事项、日期解析、生成查询词**；真正创建和查询由本地 Apple Shortcuts 系统动作执行。禁止采用模型输出任意 Shortcuts action 名称/URL 执行不在白名单内的操作。
 
@@ -63,7 +65,8 @@
       "end": "ISO8601 or empty",
       "due": "ISO8601 or YYYY-MM-DD or empty",
       "all_day": false,
-      "include_completed": false
+      "include_completed": false,
+      "checklist": false
     }
   ]
 }
@@ -72,8 +75,12 @@
 - 日期解释必须基于快捷指令传入的 `Current Date` 和当前时区，绝不能使用模型内部的假定日期。
 - 标题和用户原话应保留中文，避免为了整洁篡改原意。
 - 一段口述含多个事项时，每项一个操作，按口述顺序排列，不得合并或遗漏。
+- 时间写成设备当地时间 `YYYY-MM-DDTHH:mm:ss`，不带时区偏移，由快捷指令按设备时区解释；仍接受带 `Z` 或 `±hh:mm` 的值。只说了钟点没说日期时，日期按今天。
+- 归类：在某个日期或钟点发生、需要到场的事（会议、约会、活动）归日历，即使口述说成“提醒我下午3点有会议”；要自己去做的动作类待办归提醒事项。
+- 清单类内容（购物清单、物品清单等并列条目）归备忘录，`checklist=true`，`body` 每行一个条目、不加符号。快捷指令先创建只有标题的备忘录，再对每个条目执行 Notes 的“追加待办项”，生成可勾选的清单。
 - Calendar 创建：start 和 end 必填；只有开始时间时 end 为开始后 1 小时并在 body 注明；只有日期时 `all_day=true`，end 为最后一天的次日（排他边界）。
-- Reminder 只有日期而无时间时，不得自作主张设为 9:00：创建无提醒时间的待办，日期写在备注。
+- Reminder 只说了日期没说钟点时（“今天”“周五之前”），由 AI 给出默认到期时间并在备注注明：日期是今天取当前时间之后的下一个整点，其他日期取当天 09:00。AI 仍只给日期时，快捷指令创建无提醒时间的待办，日期写在备注。
+- Reminder 的时间说得模糊（“一会儿”“待会儿”“稍后”）或无法识别时，`due` 留空：创建没有提醒时间的待办，把原说法写进备注，不能因此创建失败。
 - 日期说不准时不猜：改用 `note.create` 或 `due` 为空的 `reminder.create`，原话说法写入 body。
 - 生成的动作名必须严格映射到这六种；契约之外的动作整体拒绝。
 - 重要：真实模型响应中的 JSON 字段只有在类型验证通过后才能用来写入系统数据。

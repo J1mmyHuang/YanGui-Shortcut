@@ -1,18 +1,29 @@
 test_all_six_actions_accept_real_json_strings (test_build.BuildContractTests) ... ok
 test_backup_switch_defaults_to_off (test_build.BuildContractTests) ... ok
+test_boolean_flags_are_compared_as_text_never_as_numbers (test_build.BuildContractTests) ... ok
 test_boolean_type_confusion_and_nonallowlisted_actions_fail (test_build.BuildContractTests) ... ok
 test_button_press_starts_dictation_directly (test_build.BuildContractTests) ... ok
 test_config_is_at_the_front_and_asked_at_import (test_build.BuildContractTests) ... ok
-test_epoch_action_uses_candidate_as_end_date (test_build.BuildContractTests) ... ok
+test_dictionary_item_types_match_value_kinds_everywhere (test_build.BuildContractTests) ... ok
 test_iso_contract_checks_real_calendar_dates_and_offset_limits (test_build.BuildContractTests) ... ok
+test_mac_test_variant_reads_shortcut_input_and_returns_its_result (test_build.BuildContractTests) ... ok
 test_malformed_json_unescaped_controls_and_surrogates_fail (test_build.BuildContractTests) ... ok
 test_missing_duplicate_extra_or_reordered_fields_fail_closed (test_build.BuildContractTests) ... ok
 test_multiple_operations_pass_the_contract_and_are_processed_in_a_loop (test_build.BuildContractTests) ... ok
-test_native_request_roundtrip_has_no_text_json_interpolation (test_build.BuildContractTests) ... ok
+test_native_requests_match_the_real_export_format (test_build.BuildContractTests) ... ok
+test_nested_loops_name_the_inner_item (test_build.BuildContractTests) ... ok
 test_no_item_type_list_sentinel_and_calendar_keyword_is_native_filter (test_build.BuildContractTests) ... ok
+test_notes_actions_carry_the_descriptor_and_entity_link_of_a_real_iphone_export (test_build.BuildContractTests) ... ok
+test_numeric_parameters_use_the_encodings_of_real_exports (test_build.BuildContractTests) ... ok
 test_only_allowed_app_actions_and_bounded_searches (test_build.BuildContractTests) ... ok
 test_prompt_classifies_into_three_apps_and_splits_items (test_build.BuildContractTests) ... ok
+test_protocol_specific_headers_and_bodies (test_build.BuildContractTests) ... ok
 test_runtime_key_is_blank_and_not_baked_into_source (test_build.BuildContractTests) ... ok
+test_time_difference_compares_the_two_real_dates_without_a_reference_date (test_build.BuildContractTests) ... ok
+test_value_sources_follow_what_the_mac_engine_accepts (test_build.BuildContractTests) ... ok
+test_empty_checklist_text_never_reaches_split_text (test_runtime.ChecklistAndSearchGuardTests) ... ok
+test_time_comparisons_use_the_dates_themselves (test_runtime.ChecklistAndSearchGuardTests) ... ok
+test_whitespace_or_symbol_only_lines_create_no_items (test_runtime.ChecklistAndSearchGuardTests) ... ok
 test_all_day_event_ends_on_its_last_day (test_runtime.GeneratedRuntimeTests) ... ok
 test_ambiguous_calendar_values_never_create_events (test_runtime.GeneratedRuntimeTests) ... ok
 test_api_error_and_bad_contract_save_only_the_transcript (test_runtime.GeneratedRuntimeTests) ... ok
@@ -21,10 +32,10 @@ test_bad_base_url_is_rejected_before_dictation (test_runtime.GeneratedRuntimeTes
 test_calendar_search_enforces_keyword_and_overlap_boundaries (test_runtime.GeneratedRuntimeTests) ... ok
 test_calendar_search_rejects_oversized_or_missing_ranges_without_reading_records (test_runtime.GeneratedRuntimeTests) ... ok
 test_date_only_reminder_becomes_undated_todo_with_the_date_in_notes (test_runtime.GeneratedRuntimeTests) ... ok
+test_empty_deadline_is_a_plain_todo_without_a_time_phrase (test_runtime.GeneratedRuntimeTests) ... ok
 test_empty_dictation_stops_before_network (test_runtime.GeneratedRuntimeTests) ... ok
 test_empty_title_gets_a_timestamp_title (test_runtime.GeneratedRuntimeTests) ... ok
 test_failure_in_one_item_does_not_block_the_others (test_runtime.GeneratedRuntimeTests) ... ok
-test_malformed_reminder_due_falls_back_to_note (test_runtime.GeneratedRuntimeTests) ... ok
 test_missing_config_stops_before_dictation_and_network (test_runtime.GeneratedRuntimeTests) ... ok
 test_note_search_reads_only_matching_synthetic_candidates (test_runtime.GeneratedRuntimeTests) ... ok
 test_note_search_without_keyword_reads_nothing (test_runtime.GeneratedRuntimeTests) ... ok
@@ -38,8 +49,42 @@ test_search_and_create_can_share_one_dictation (test_runtime.GeneratedRuntimeTes
 test_single_note_uses_import_config_and_reaches_native_note (test_runtime.GeneratedRuntimeTests) ... ok
 test_timed_and_undated_reminders_use_distinct_native_parameters (test_runtime.GeneratedRuntimeTests) ... ok
 test_transport_abort_keeps_transcript_only_when_backup_is_on (test_runtime.GeneratedRuntimeTests) ... ok
+test_unrecognised_or_vague_reminder_deadlines_still_create_an_undated_reminder (test_runtime.GeneratedRuntimeTests) ... ok
+test_checklist_items_become_real_checklist_entries_on_one_note (test_runtime.LocalTimeAndListTests) ... ok
+test_checklist_note_carries_no_transcript_and_empty_body_still_creates_the_note (test_runtime.LocalTimeAndListTests) ... ok
+test_checklist_shares_one_dictation_with_other_destinations (test_runtime.LocalTimeAndListTests) ... ok
+test_explicit_offsets_still_mean_that_instant (test_runtime.LocalTimeAndListTests) ... ok
+test_leading_symbols_blank_lines_and_spaces_are_cleaned_from_checklist_lines (test_runtime.LocalTimeAndListTests) ... ok
+test_local_time_reminder_is_set_at_that_wall_clock_time (test_runtime.LocalTimeAndListTests) ... ok
+test_local_times_without_offset_create_events_in_the_device_zone (test_runtime.LocalTimeAndListTests) ... ok
+test_notes_intents_without_the_iphone_descriptor_are_rejected_by_the_interpreter (test_runtime.LocalTimeAndListTests) ... ok
+test_plain_notes_are_unchanged_when_checklist_is_false (test_runtime.LocalTimeAndListTests) ... ok
+test_sloppy_but_unambiguous_time_spellings_are_normalised (test_runtime.LocalTimeAndListTests) ... ok
+test_unparseable_calendar_time_falls_back_to_a_note_that_shows_what_was_received (test_runtime.LocalTimeAndListTests) ... ok
+test_a_stage_past_the_last_action_runs_to_the_end (test_runtime.MacTestVariantDebugTests) ... ok
+test_every_plain_action_is_followed_by_one_checkpoint (test_runtime.MacTestVariantDebugTests) ... ok
+test_plain_input_runs_everything_and_lists_the_raw_fields (test_runtime.MacTestVariantDebugTests) ... ok
+test_reply_override_replaces_the_model_text (test_runtime.MacTestVariantDebugTests) ... ok
+test_stage_stops_at_the_first_checkpoint_at_or_after_the_stage (test_runtime.MacTestVariantDebugTests) ... ok
+test_failures_are_returned_as_output_not_dialogs (test_runtime.MacTestVariantTests) ... ok
+test_input_text_is_processed_and_the_report_is_returned_as_output (test_runtime.MacTestVariantTests) ... ok
+test_notes_are_text_only_and_checklist_items_are_listed (test_runtime.MacTestVariantTests) ... ok
+test_anthropic_base_url_forms_resolve_to_one_messages_endpoint (test_runtime.ProtocolAndModelTests) ... ok
+test_anthropic_failures_keep_transcript_and_show_reason (test_runtime.ProtocolAndModelTests) ... ok
+test_anthropic_protocol_request_shape (test_runtime.ProtocolAndModelTests) ... ok
+test_anthropic_reply_skips_thinking_blocks_and_fences (test_runtime.ProtocolAndModelTests) ... ok
+test_blank_model_lists_anthropic_models_with_anthropic_headers (test_runtime.ProtocolAndModelTests) ... ok
+test_blank_model_lists_openai_models_and_uses_the_choice (test_runtime.ProtocolAndModelTests) ... ok
+test_filled_model_never_calls_models (test_runtime.ProtocolAndModelTests) ... ok
+test_interpreter_rejects_item_types_that_real_shortcuts_would_mangle (test_runtime.ProtocolAndModelTests) ... ok
+test_models_failures_stop_before_dictation_and_writes (test_runtime.ProtocolAndModelTests) ... ok
+test_openai_base_url_forms_resolve_to_one_completions_endpoint (test_runtime.ProtocolAndModelTests) ... ok
+test_openai_reply_with_code_fence_is_accepted (test_runtime.ProtocolAndModelTests) ... ok
+test_protocol_must_be_openai_or_anthropic (test_runtime.ProtocolAndModelTests) ... ok
+test_provider_error_text_is_shown_without_leaking_the_key (test_runtime.ProtocolAndModelTests) ... ok
+test_unexpected_reply_shows_the_start_of_the_response (test_runtime.ProtocolAndModelTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 40 tests in 0.643s
+Ran 85 tests in 2.179s
 
 OK

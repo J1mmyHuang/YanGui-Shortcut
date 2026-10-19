@@ -1,19 +1,19 @@
 {
   "workflow_name": "闪念",
-  "action_count": 1050,
-  "xml_bytes": 717484,
-  "xml_sha256": "a9813ae61d2a7279ee0d9a8357c0479405a6c10ebf546bdb4a04e0e772197818",
+  "action_count": 1251,
+  "xml_bytes": 890675,
+  "xml_sha256": "b88ca9ba5c7834a93e18291fbbfc12c3f42cabf3db29b5dcd1fc6bc6ccb0418f",
   "plugin_version": "1.2.1",
   "target": "iOS 27 (macOS 26 cross-check)",
-  "full_plugin_validation": "FAILED: 15 Create Note actions lack AppIntentDescriptor/title (legacy Notes format, no iOS evidence); 3 empty-text findings are the import-question targets (the plugin's own golden example 6a18b76843ac45c384ac3400f3740997 triggers the same check)",
+  "full_plugin_validation": "FAILED (known false positives against a real iPhone export): 19 Create Note 'missing title/name' (iPhone export has only WFCreateNoteInput); 1 unknown AppIntent id com.apple.mobilenotes.CreateChecklistItemLinkAction (plugin knows only com.apple.Notes.*); 3 empty-text findings are the import-question targets (golden example 6a18b76843ac45c384ac3400f3740997 triggers the same check)",
   "real_device_tests": false,
-  "live_api_tests": false,
-  "signed_bytes": 99274,
-  "signed_sha256": "f123d5702e069bc6effc7bdcc21716b1c4b63b07a19d508eaf4cb7b2f42680cb",
+  "live_api_tests": "classification only: curl to the user's OpenAI-compatible model with the shortcut's request body",
+  "signed_bytes": 119037,
+  "signed_sha256": "f5c6f8b3c06c3efedf35dfa7f611e695b20247ae7117107461c955e68ead67cd",
   "signed_magic": "AEA1",
   "signing_mode": "anyone",
   "offline_tests": {
-    "passed": 40,
+    "passed": 85,
     "failed": 0,
     "apple_runtime": false
   },
@@ -21,14 +21,40 @@
   "plutil": "PASS",
   "source": "ShanNian.xml",
   "signed": "ShanNian.shortcut",
-  "build_status": "preview: Notes validation unresolved; iPhone untested",
+  "build_status": "preview: Mac engine scenarios pass; Notes validation unresolved; iPhone untested",
   "signed_authentication_keys": [
     "SigningCertificateChain"
   ],
   "certificate_contains_email": false,
   "license": "AGPL-3.0-or-later",
   "official_source_notice": "first non-executing Comment",
-  "import_questions": 3,
+  "import_questions": 4,
   "interaction": "Action Button press starts Dictate Text (zh-CN, On Tap); second-press stop untested on device",
-  "archive_matches_source": true
+  "archive_matches_source": true,
+  "protocols": [
+    "openai",
+    "anthropic"
+  ],
+  "mac_engine_tests": {
+    "log": "validation-mac-engine.log",
+    "date": "2026-10-20",
+    "engine": "macOS 26 Shortcuts (shortcuts run), test variant from build_shannian.py --test",
+    "passed": [
+      "note.create (text only on Mac)",
+      "calendar.create timed",
+      "calendar.create all-day",
+      "reminder.create timed",
+      "reminder.create date only",
+      "reminder.create vague time",
+      "note.create checklist (text only on Mac)"
+    ],
+    "not_run": [
+      "Notes app actions",
+      "calendar.search (no calendar read permission)",
+      "note.search",
+      "anthropic protocol",
+      "/models picker",
+      "dictation"
+    ]
+  }
 }

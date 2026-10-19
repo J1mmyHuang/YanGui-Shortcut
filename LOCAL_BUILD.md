@@ -21,7 +21,7 @@
    cd ShanNian-Shortcut
    ```
 
-构建现有快照和离线测试不调用模型，不需要 API Key。使用 AI Agent 改造时，其模型登录、订阅或 API 费用由你选择的工具决定。iPhone 上运行的 BYOK 模型服务在添加快捷指令时填写 Base URL、模型 ID、API Key。
+构建现有快照和离线测试不调用模型，不需要 API Key。使用 AI Agent 改造时，其模型登录、订阅或 API 费用由你选择的工具决定。iPhone 上运行的 BYOK 模型服务在添加快捷指令时填写 API 协议、Base URL、API Key、模型 ID（可留空，运行时选择）。
 
 ## 重建现有测试版（无需 AI Agent）
 
@@ -34,7 +34,7 @@ python3 ci/validate_plist.py preview/ShanNian.xml
 plutil -lint preview/ShanNian.xml
 ```
 
-这会更新 `preview/ShanNian.xml`，保留当前实现及其已知限制。40项测试是离线模拟，不是 Apple 的实际动作引擎。完整 Shortcuts Playground 检查仍有 Notes 错误，见 `preview/validation-ios27.log`；重建不会自动修复这些问题，也不会更新旧签名。
+这会更新 `preview/ShanNian.xml`，保留当前实现及其已知限制。85 项测试是离线模拟，不是 Apple 的实际动作引擎；Mac 引擎实测用 `python3 preview/build_shannian.py --test` 生成的测试版，步骤见 `handoff.md`，结果见 `preview/validation-mac-engine.log`。完整 Shortcuts Playground 检查仍有 Notes 错误，见 `preview/validation-ios27.log`；重建不会自动修复这些问题，也不会更新旧签名。
 
 如需为重建后的 XML 生成新的**测试版**签名，在 Mac 上执行：
 
@@ -73,6 +73,24 @@ git clone https://github.com/viticci/shortcuts-playground-plugin.git .ci-tools/s
 
 本地通用任务见 [ci/BUILD_LOCAL_PROMPT.md](ci/BUILD_LOCAL_PROMPT.md)。Agent 应按其宿主工具的方式读取动作资料并执行脚本；签名命令需在 Mac 执行。
 
+读取已签名文件（例如用户导出的样本）：
+
+```sh
+python3 ci/read_signed_shortcut.py 某个.shortcut 输出.xml
+```
+
+仅限 macOS，依赖系统的 `aea`、`aa`、`openssl`。
+
+## 在 Mac 上用真实引擎测试
+
+`python3 preview/build_shannian.py --test` 生成测试版 `dist/ShanNian-Test.xml`：原话来自「快捷指令输入」，结果作为输出返回，备忘录动作只生成文本，其余动作与正式版相同。按上面的步骤签名成 `dist/ShanNian-Test.shortcut`，在 Mac 上双击导入并填写 API 协议、Base URL、API Key、模型 ID（不要留空），然后：
+
+```sh
+python3 ci/run_mac_test.py ShanNian-Test "测试：今天下午两点有个会"
+```
+
+该命令需在沙箱外运行，会真实写入日历和提醒事项，测试原话建议带「测试」二字。首次运行时系统会弹出日历、提醒事项权限，需要在 Mac 上点允许。
+
 ## 交付检查
 
 新的构建输出放在 `dist/`：
@@ -87,6 +105,6 @@ git clone https://github.com/viticci/shortcuts-playground-plugin.git .ci-tools/s
 
 ## 导入和测试
 
-通过隔空投送或 iCloud Drive 在 iPhone 打开已签名 `.shortcut`，依次填写 Base URL、模型 ID、API Key，审查动作后导入。先在快捷指令 App 里运行，测试 Notes、Calendar、Reminders 的创建和查询，核对权限与日期。确认后在「设置 → 操作按钮 → 快捷指令 → 闪念」绑定，按一下说话，说完点按完成。
+通过隔空投送或 iCloud Drive 在 iPhone 打开已签名 `.shortcut`，依次填写 API 协议、Base URL、API Key、模型 ID，审查动作后导入。先在快捷指令 App 里运行，测试 Notes、Calendar、Reminders 的创建和查询，核对权限与日期。确认后在「设置 → 操作按钮 → 快捷指令 → 闪念」绑定，按一下说话，说完点按完成。
 
 遇到未知动作或导入错误时，将具体错误反馈给维护者或你的 Agent。静态结构检查、离线测试和签名都不能代替 iPhone 实测。

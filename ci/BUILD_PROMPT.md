@@ -11,7 +11,7 @@ Read:
 Goal:
 - One iPhone Action Button compatible shortcut called 闪念.
 - One press of the Action Button starts Dictate Text (Chinese) directly; parse the Chinese natural language and split it into independent items.
-- BYOK OpenAI-compatible Chat Completions API: base URL, model name and API key asked as import questions and held in three Text actions at the top of the shortcut. Keep them blank in the repository; never hardcode real credentials.
+- BYOK with a user-selected protocol, OpenAI-compatible Chat Completions or Anthropic-compatible Messages: protocol, base URL, API key and model name asked as import questions and held in four Text actions at the top of the shortcut; a blank model is chosen from the service's /models list. Encode request bodies with the WFItemType codes of real exports (0 text, 1 dictionary, 2 array, 3 number, 4 boolean). Keep them blank in the repository; never hardcode real credentials.
 - Allow exactly six genuine native iOS operations: note.create, note.search, calendar.create, calendar.search, reminder.create, reminder.search. The AI classifies each item into Notes, Reminders or Calendar.
 - Create/search Apple Notes, Calendar and Reminders using actual Shortcuts actions / supported iOS AppIntents. Do not use macOS AppleScript, fake generated answers, Google/Notion/Drafts, broad access to unrelated apps, or extra privileges.
 - For searches, retrieve real native app data before answering. Bound candidate counts and only send necessary snippets to the selected AI endpoint.
@@ -26,7 +26,7 @@ API schema example:
 {
   "operations": [{
     "action":"note.create|note.search|calendar.create|calendar.search|reminder.create|reminder.search",
-    "title":"","body":"","query":"","start":"","end":"","due":"","all_day":false,"include_completed":false
+    "title":"","body":"","query":"","start":"","end":"","due":"","all_day":false,"include_completed":false,"checklist":false
   }]
 }
 Ensure parsing, expected field type checks, and routing are robust.

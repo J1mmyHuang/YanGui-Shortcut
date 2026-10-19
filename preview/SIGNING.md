@@ -12,7 +12,7 @@ Apple 官方文档说明：签名时 Apple 会收到快捷指令副本以进行�
 
 ## 文件检查
 
-- XML 不含真实 API Key。Base URL、模型 ID、API Key 三个文本动作为空，在用户添加快捷指令时通过导入问题填写。
+- XML 不含真实 API Key。Base URL、API Key、模型 ID 三个文本动作为空，API 协议默认 openai，均在用户添加快捷指令时通过导入问题填写。
 - 源 XML 不含个人笔记、日历事件、提醒或联系人。
 - 签名文件为 `AEA1` 封装；其公开认证元数据只含 `SigningCertificateChain`。
 - 已检查该证书链：没有邮箱地址，签名者证书主题使用不透明标识，颁发者是 Apple System Integration CA 4。证书本身是公开验证材料；这不等于保证完全匿名或无法关联签名者。

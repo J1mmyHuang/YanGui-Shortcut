@@ -24,7 +24,7 @@ class _Stop(Exception):
 
 class OfflineRuntime:
     def __init__(self, document, *, responses=(), records=None, answers=None,
-                 menus=(), now=None, timezone='Australia/Melbourne', import_answers=None):
+                 menus=(), now=None, timezone='Australia/Melbourne', import_answers=None, shortcut_input=None):
         self.actions = deepcopy(document['WFWorkflowActions'])
         self._apply_import_questions(document, import_answers or {})
         self.responses = deque(deepcopy(list(responses)))
@@ -34,12 +34,16 @@ class OfflineRuntime:
         self.zone = ZoneInfo(timezone)
         self.now = now or datetime(2026, 10, 20, 12, tzinfo=self.zone)
         self.variables = {}
+        self.depth = 0
         self.outputs = {}
         self.displays = []
         self.notifications = []
         self.requests = []
         self.writes = []
         self.reads = []
+        self.choices = []
+        self.shortcut_input = shortcut_input
+        self.output = None
         self.executed = []
         self.blocks = self._blocks()
 
@@ -113,14 +117,19 @@ class OfflineRuntime:
                 elif ident.endswith(('.repeat.count', '.repeat.each')):
                     items = (range(1, int(self._value(p['WFRepeatCount'])) + 1)
                              if ident.endswith('.repeat.count') else self._items(self._value(p['WFInput'])))
-                    old = {k: self.variables.get(k) for k in ('Repeat Item', 'Repeat Index')}
+                    # A real engine names the inner loop's values Repeat Item 2 / Repeat Index 2, and so on;
+                    # inside it, Repeat Item still means the outer loop's item.
+                    self.depth += 1
+                    suffix = '' if self.depth == 1 else f' {self.depth}'
+                    old = {k: self.variables.get(k) for k in ('Repeat Item' + suffix, 'Repeat Index' + suffix)}
                     present = {k for k in old if k in self.variables}
                     for n, item in enumerate(items, 1):
-                        self.variables['Repeat Index'] = n
+                        self.variables['Repeat Index' + suffix] = n
                         if ident.endswith('.repeat.each'):
-                            self.variables['Repeat Item'] = item
+                            self.variables['Repeat Item' + suffix] = item
                             self.outputs[p['UUID']] = item
                         self._execute(index + 1, close)
+                    self.depth -= 1
                     for key in old:
                         if key in present:
                             self.variables[key] = old[key]
@@ -139,7 +148,8 @@ class OfflineRuntime:
 
     @staticmethod
     def _has(value):
-        return value is not None and value != '' and value != []
+        # On a real engine an empty text still "has any value"; only a missing value or empty list does not.
+        return value is not None and value != []
 
     def _reference(self, value):
         kind = value['Type']
@@ -155,6 +165,10 @@ class OfflineRuntime:
             result = self.outputs[uid]
         elif kind == 'CurrentDate':
             result = self.now
+        elif kind == 'ExtensionInput':
+            if self.shortcut_input is None:
+                raise ValueError('The shortcut reads Shortcut Input but none was supplied')
+            result = self.shortcut_input
         else:
             raise NotImplementedError(f'Unsupported variable type {kind}')
         for modifier in value.get('Aggrandizements', []):
@@ -185,9 +199,17 @@ class OfflineRuntime:
                 cursor = position + 2
             return result + encoded[cursor:].decode('utf-16-le')
         if serialization == 'WFDictionaryFieldValue':
-            return {self._value(item['WFKey']): self._value(item['WFValue'])
-                    for item in value['Value']['WFDictionaryFieldValueItems']}
+            inner = value['Value']
+            if 'WFDictionaryFieldValueItems' not in inner:
+                return self._value(inner)  # dictionary-valued item: wrapped twice
+            result = {}
+            for item in inner['WFDictionaryFieldValueItems']:
+                self._check_item_type(item)
+                result[self._value(item['WFKey'])] = self._value(item['WFValue'])
+            return result
         if serialization == 'WFArrayParameterState':
+            for item in value['Value']:
+                self._check_item_type(item)
             return [self._value(item['WFValue']) for item in value['Value']]
         if serialization == 'WFNumberSubstitutableState':
             return value['Value']
@@ -196,6 +218,28 @@ class OfflineRuntime:
         if value.get('Type') in ('ActionOutput', 'Variable', 'CurrentDate'):
             return self._reference(value)
         return {key: self._value(item) for key, item in value.items()}
+
+    @staticmethod
+    def _check_item_type(item):
+        # Codes seen in real exported shortcuts: 0 text, 1 dictionary, 2 array, 3 number, 4 boolean.
+        # A mismatch makes the real Shortcuts engine drop or mangle the value, so fail closed here.
+        wrapped = item['WFValue']
+        kind = wrapped.get('WFSerializationType') if isinstance(wrapped, dict) else None
+        code = item['WFItemType']
+        if kind == 'WFDictionaryFieldValue':
+            ok = code == 1 and isinstance(wrapped['Value'], dict) and 'WFDictionaryFieldValueItems' not in wrapped['Value']
+        elif kind == 'WFArrayParameterState':
+            ok = code == 2
+        elif kind == 'WFNumberSubstitutableState':
+            ok = code == 4
+        elif kind == 'WFTextTokenString':
+            string = wrapped['Value']['string']
+            numeric = string.lstrip('-').replace('.', '', 1).isdigit() and not wrapped['Value'].get('attachmentsByRange')
+            ok = code == 0 or (code == 3 and numeric)
+        else:
+            ok = False
+        if not ok:
+            raise ValueError(f'WFItemType {code} does not fit a {kind} value')
 
     def _text(self, value):
         if value is None:
@@ -255,6 +299,8 @@ class OfflineRuntime:
         if code in (100, 101):
             return self._has(value) if code == 100 else not self._has(value)
         if code in (0, 1, 2, 3):
+            if not isinstance(p['WFNumberValue'], float):
+                raise ValueError(f"Number conditions use a real number, as in exported shortcuts: {p['WFNumberValue']!r}")
             left, right = float(value), float(self._value(p['WFNumberValue']))
             return {0: left < right, 1: left <= right, 2: left > right, 3: left >= right}[code]
         left, right = self._text(value), self._text(self._value(p['WFConditionalActionString']))
@@ -264,6 +310,8 @@ class OfflineRuntime:
             return left != right
         if code in (99, 999):
             return (right in left) if code == 99 else (right not in left)
+        if code in (8, 9):
+            return left.startswith(right) if code == 8 else left.endswith(right)
         raise NotImplementedError(f'Conditional code {code}')
 
     def _filter(self, app, p):
@@ -328,9 +376,14 @@ class OfflineRuntime:
         if name == 'dictatetext':
             return self.answers.get('Dictate Text', '原始中文口述')
         if name == 'date':
+            if p.get('WFDateActionMode') == 'Specified Date':
+                return self._date(self._text(self._value(p['WFDateActionDate'])))
             return self.now
         if name == 'format.date':
-            date, pattern = self._date(self._value(p['WFDate'])), p['WFDateFormatString']
+            if 'WFDateFormatString' in p or p.get('WFDateFormatStyle') != 'Custom':
+                raise ValueError('Custom Format Date keeps its pattern in WFDateFormat, as in Apple exports; '
+                                 'WFDateFormatString formats as empty text on a real engine')
+            date, pattern = self._date(self._value(p['WFDate'])), p['WFDateFormat']
             if pattern == 'VV':
                 return self.zone.key
             if pattern == 'yyyy-MM-dd':
@@ -350,9 +403,15 @@ class OfflineRuntime:
             return self._type(self._value(p['WFInput']))
         if name == 'getitemfromlist':
             items = self._items(self._value(p['WFInput']))
-            if p['WFItemSpecifier'] != 'First Item':
-                raise NotImplementedError(p['WFItemSpecifier'])
-            return items[0] if items else None
+            specifier = p['WFItemSpecifier']
+            if specifier == 'First Item':
+                return items[0] if items else None
+            if specifier == 'Last Item':
+                return items[-1] if items else None
+            if specifier == 'Item At Index':
+                index = int(p['WFItemIndex'])
+                return items[index - 1] if 0 < index <= len(items) else None
+            raise NotImplementedError(specifier)
         if name == 'getvalueforkey':
             source = self._value(p['WFInput'])
             if p.get('WFGetDictionaryValueType') == 'All Keys':
@@ -362,11 +421,21 @@ class OfflineRuntime:
             return len(self._items(self._value(p.get('Input', p.get('WFInput')))))
         if name == 'text.match':
             pattern = self._text(self._value(p['WFMatchTextPattern'])).replace(r'\z', r'\Z')
-            return [m.group(0) for m in re.finditer(pattern, self._text(self._value(p['text'])))]
+            flags = 0 if p.get('WFMatchTextCaseSensitive', True) else re.IGNORECASE
+            return [m.group(0) for m in re.finditer(pattern, self._text(self._value(p['text'])), flags)]
         if name == 'text.replace':
             source = self._text(self._value(p['WFInput']))
             old, new = p['WFReplaceTextFind'], p['WFReplaceTextReplace']
-            return re.sub(old, new, source) if p.get('WFReplaceTextRegularExpression') else source.replace(old, new)
+            if p.get('WFReplaceTextRegularExpression'):
+                return re.sub(old, re.sub(r'\$(\d)', r'\\g<\1>', new), source)
+            return source.replace(old, new)
+        if name == 'text.split':
+            separator = p.get('WFTextSeparator')
+            if separator == 'Custom':
+                return self._text(self._value(p['text'])).split(p['WFTextCustomSeparator'])
+            if separator != 'New Lines':
+                raise NotImplementedError(separator)
+            return self._text(self._value(p['text'])).split('\n')
         if name == 'detect.dictionary':
             value = self._value(p['WFInput'])
             return json.loads(value) if isinstance(value, str) else value
@@ -382,7 +451,23 @@ class OfflineRuntime:
             if p.get('WFTimeUntilUnit') != 'Seconds':
                 raise NotImplementedError(p.get('WFTimeUntilUnit'))
             return second.timestamp() - first.timestamp()
+        if name == 'appendvariable':
+            value = self._value(p['WFInput'])
+            self.variables[p['WFVariableName']] = list(self.variables.get(p['WFVariableName'], [])) + [value]
+            return value
+        if name == 'choosefromlist':
+            items = self._items(self._value(p['WFInput']))
+            self.choices.append(items)
+            selected = self.answers.get('Choose From List', items[0] if items else None)
+            if selected not in items:
+                raise ValueError(f'Synthetic list answer {selected!r} not in {items!r}')
+            return selected
         if name == 'math':
+            operand = p['WFMathOperand']
+            if (isinstance(operand, str) and not operand.strip().lstrip('-').replace('.', '', 1).isdigit()) or (
+                    isinstance(operand, dict) and operand.get('WFSerializationType') != 'WFTextTokenAttachment'):
+                # Real exports use a number or a variable attachment; text here shows up as an unset parameter.
+                raise ValueError(f'Math operand must be a number or a variable attachment, not {operand!r}')
             left, right = float(self._value(p['WFInput'])), float(self._value(p['WFMathOperand']))
             operation = p.get('WFMathOperation', '+')
             if operation == '+':
@@ -400,6 +485,9 @@ class OfflineRuntime:
                 # Calendar days: wall-clock arithmetic on an aware datetime keeps local time.
                 return (date.astimezone(self.zone) + timedelta(days=sign * magnitude))
             raise NotImplementedError(quantity['Unit'])
+        if name == 'output':
+            self.output = self._text(self._value(p['WFOutput']))
+            raise _Stop()
         if name == 'showresult':
             self.displays.append(self._text(self._value(p['Text'])))
             return None
@@ -408,20 +496,33 @@ class OfflineRuntime:
             return None
         if name == 'downloadurl':
             self.requests.append({'url': self._value(p['WFURL']), 'method': p['WFHTTPMethod'],
+                                  'advanced': p.get('Advanced'),
                                   'headers': self._value(p['WFHTTPHeaders']),
-                                  'json': self._value(p['WFJSONValues'])})
+                                  'json': self._value(p['WFJSONValues']) if 'WFJSONValues' in p else None})
             if not self.responses:
                 raise ValueError('No synthetic response remains; no real request was attempted')
             response = self.responses.popleft()
             if isinstance(response, Exception):
                 raise response
             return response
+        if ident.startswith('com.apple.mobilenotes.'):
+            descriptor = p.get('AppIntentDescriptor')
+            if not descriptor or descriptor.get('BundleIdentifier') != 'com.apple.mobilenotes' \
+                    or not descriptor.get('AppIntentIdentifier'):
+                raise ValueError(f'{ident} needs the AppIntentDescriptor a real iPhone export carries')
         if ident == 'com.apple.mobilenotes.SharingExtension':
             content = self._text(self._value(p['WFCreateNoteInput']))
             title, _, body = content.partition('\n')
-            record = {'kind': 'note', 'title': title, 'body': body.lstrip('\n')}
+            record = {'kind': 'note', 'title': title, 'body': body.lstrip('\n'), 'checklist': []}
             self.writes.append(record)
             return record
+        if ident == 'com.apple.mobilenotes.CreateChecklistItemLinkAction':
+            note = self._value(p['noteEntity'])
+            if not isinstance(note, dict) or note.get('kind') != 'note':
+                raise ValueError('noteEntity must reference a created note')
+            item = self._text(self._value(p['name']))
+            note['checklist'].append(item)
+            return item
         if name == 'addnewevent':
             record = {'kind': 'calendar', 'title': self._value(p['WFCalendarItemTitle']),
                       'start': self._date(self._value(p['WFCalendarItemStartDate'])),

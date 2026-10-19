@@ -1,57 +1,51 @@
 Validation failed:
 
-First failing action: index 0 (is.workflow.actions.comment)
-Snippet: {'UUID': 'C2FAE21E-ECB9-4CCD-A9D9-29BCBACB5D2E', 'WFCommentActionText': '这是一个免费的开源软件。如果通过任何付费渠道下载，请认准我们的这个仓库：https://github.com/J1mmyHuang/ShanNian-Shortcut\n许可：AGPL-3.0-or-later；Copyright (C) 2026 J1mmyHuang。\n\n闪念：按一下操作按钮，直接说话 → 点按结束 →...
+First failing action: index 5 (is.workflow.actions.gettext)
+Snippet: {'UUID': 'B34AE2FA-10B3-45BD-AFB1-C54985098EC5'}
 
-- AppIntent action missing AppIntentDescriptor at index 63: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 89: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 102: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 114: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 125: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 136: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 147: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 160: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 171: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 184: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 195: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 208: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 220: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 233: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 1040: com.apple.mobilenotes.SharingExtension
-- Empty parameter at index 3: is.workflow.actions.gettext -> WFTextActionText
-- Text action has empty text at index 3
 - Empty parameter at index 5: is.workflow.actions.gettext -> WFTextActionText
 - Text action has empty text at index 5
 - Empty parameter at index 7: is.workflow.actions.gettext -> WFTextActionText
 - Text action has empty text at index 7
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 63: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 63
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 89: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 89
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 102: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 102
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 114: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 114
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 125: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 125
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 136: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 136
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 147: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 147
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 160: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 160
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 171: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 171
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 184: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 184
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 195: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 195
+- Empty parameter at index 9: is.workflow.actions.gettext -> WFTextActionText
+- Text action has empty text at index 9
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 161: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 161
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 183: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 183
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 196: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 196
 - AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 208: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
 - Notes create action missing title/name parameter at index 208
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 220: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 220
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 233: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 233
-- Action identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 311: is.workflow.actions.filter.notes. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 1040: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 1040
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 222: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 222
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 255: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 255
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 268: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 268
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 280: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 280
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 292: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 292
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 305: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 305
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 317: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 317
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 330: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 330
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 342: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 342
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 355: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 355
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 371: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 371
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 387: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 387
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 401: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 401
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 477: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 477
+- Unknown AppIntent identifier at index 498: com.apple.mobilenotes.CreateChecklistItemLinkAction
+- Action identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 531: is.workflow.actions.filter.notes. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 1236: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 1236
