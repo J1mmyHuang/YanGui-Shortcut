@@ -26,6 +26,6 @@ test_timed_and_undated_reminders_use_distinct_native_parameters (test_runtime.Ge
 test_transport_abort_has_only_preconfirmed_recovery_note (test_runtime.GeneratedRuntimeTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 26 tests in 0.072s
+Ran 26 tests in 0.074s
 
 OK

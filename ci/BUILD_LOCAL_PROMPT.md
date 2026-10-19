@@ -8,7 +8,7 @@ Report missing dependencies and unverified behavior. Never upload Apple credenti
 
 Read fully:
 1. `spec/闪念_Shortcuts_构建规格.md` (the complete requirements)
-2. the installed `shortcuts-playground` plugin's `SKILL.md`, `PLIST_FORMAT.md`, `ACTIONS.md`, `APPINTENTS.md`, `VARIABLES.md`, `CONTROL_FLOW.md`, `FILTERS.md`, `DATE_TIME.md`, `BEST_PRACTICES.md` and directly relevant golden examples.
+2. the available Shortcuts Playground reference's `SKILL.md`, `PLIST_FORMAT.md`, `ACTIONS.md`, `APPINTENTS.md`, `VARIABLES.md`, `CONTROL_FLOW.md`, `FILTERS.md`, `DATE_TIME.md`, `BEST_PRACTICES.md` and directly relevant golden examples. Record the reference version used.
 3. `LOCAL_BUILD.md` for deliverable expectations.
 
 Build one iPhone/iOS Shortcut called **闪念**, using Apple native Notes, Calendar and Reminders and ONLY these six allowed operations:
@@ -27,5 +27,6 @@ Mandatory:
 4. Archive unsigned XML and use installed plugin's `sign_shortcut.sh` or macOS `shortcuts sign --mode anyone` to create **`dist/ShanNian.shortcut`**. Confirm output exists and size > 0 before declaring signing successful. If signing fails, leave XML and full error log for correction. No workaround that forges a fake .shortcut.
 5. Keep secrets and personal notes/calendars/reminders OUT of the repository. Any on-device runtime key setup should be transparent; explicitly warn if key ends up in the Shortcut plist/Shortcuts-synced storage.
 6. Prioritize a working, repairable native shortcut over fancy UI; no third-party apps.
+7. Preserve the top Comment identifying the project as free open-source software and linking to `https://github.com/J1mmyHuang/ShanNian-Shortcut`. This notice belongs in a non-executing Comment, not a runtime alert or model prompt. Preserve the project's AGPL-3.0-or-later license and third-party attribution.
 
 User-facing progress should be brief. On completion provide exact output paths, validated aspects, gaps and the iPhone import steps. If any one of six operations remains unsupported, say so explicitly.

@@ -10,7 +10,7 @@
 
 ## 交给具备文件和终端能力的 AI Agent 的构建任务
 
-你是 Apple Shortcuts 资深工程师。请使用已经安装的 **Shortcuts Playground** 插件、其 action schema / golden examples / validator，构建一个适用于 **iOS 27 iPhone** 的原生快捷指令，名称「闪念」。不要只写说明文档。请生成实际的 Shortcuts XML/plist，执行可用的静态验证，在这台 Mac 上用 Apple 自带 `shortcuts sign` 生成 `.shortcut`，并报告可能需要在 iPhone 上手动配置的动作。
+你是 Apple Shortcuts 资深工程师。请使用 **Shortcuts Playground** 的 action schema / golden examples / validator（可通过插件或直接读取参考源文件），构建一个适用于 **iOS 27 iPhone** 的原生快捷指令，名称「闪念」。Agent 必须具备所需文件和终端能力。不要只写说明文档。请生成实际的 Shortcuts XML/plist，执行可用的静态验证，在 Mac 上用 Apple 自带 `shortcuts sign` 生成 `.shortcut`，并报告可能需要在 iPhone 上手动配置的动作。
 
 ### 1. 唯一允许的能力（六个）
 
