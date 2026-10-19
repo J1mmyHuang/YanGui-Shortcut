@@ -1,9 +1,41 @@
 Validation failed:
 
 First failing action: index 0 (is.workflow.actions.comment)
-Snippet: {'UUID': 'C2FAE21E-ECB9-4CCD-A9D9-29BCBACB5D2E', 'WFCommentActionText': '这是一个免费的开源软件。如果通过任何付费渠道下载，请认准我们的这个仓库：https://github.com/J1mmyHuang/ShanNian-Shortcut\n许可：AGPL-3.0-or-later；Copyright (C) 2026 J1mmyHuang。\n\n闪念：中文听写或文字 → 原话恢复笔记 → 自选...
+Snippet: {'UUID': 'C2FAE21E-ECB9-4CCD-A9D9-29BCBACB5D2E', 'WFCommentActionText': '这是一个免费的开源软件。如果通过任何付费渠道下载，请认准我们的这个仓库：https://github.com/J1mmyHuang/ShanNian-Shortcut\n许可：AGPL-3.0-or-later；Copyright (C) 2026 J1mmyHuang。\n\n闪念：按一下操作按钮，直接说话 → 点按结束 →...
 
-- AppIntent action missing AppIntentDescriptor at index 36: com.apple.mobilenotes.SharingExtension
-- AppIntent action missing AppIntentDescriptor at index 279: com.apple.mobilenotes.SharingExtension
-- Notes create action missing title/name parameter at index 36
-- Notes create action missing title/name parameter at index 279
+- AppIntent action missing AppIntentDescriptor at index 63: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 89: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 102: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 114: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 125: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 136: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 147: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 160: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 171: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 184: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 195: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 208: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 220: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 233: com.apple.mobilenotes.SharingExtension
+- AppIntent action missing AppIntentDescriptor at index 1040: com.apple.mobilenotes.SharingExtension
+- Empty parameter at index 3: is.workflow.actions.gettext -> WFTextActionText
+- Text action has empty text at index 3
+- Empty parameter at index 5: is.workflow.actions.gettext -> WFTextActionText
+- Text action has empty text at index 5
+- Empty parameter at index 7: is.workflow.actions.gettext -> WFTextActionText
+- Text action has empty text at index 7
+- Notes create action missing title/name parameter at index 63
+- Notes create action missing title/name parameter at index 89
+- Notes create action missing title/name parameter at index 102
+- Notes create action missing title/name parameter at index 114
+- Notes create action missing title/name parameter at index 125
+- Notes create action missing title/name parameter at index 136
+- Notes create action missing title/name parameter at index 147
+- Notes create action missing title/name parameter at index 160
+- Notes create action missing title/name parameter at index 171
+- Notes create action missing title/name parameter at index 184
+- Notes create action missing title/name parameter at index 195
+- Notes create action missing title/name parameter at index 208
+- Notes create action missing title/name parameter at index 220
+- Notes create action missing title/name parameter at index 233
+- Notes create action missing title/name parameter at index 1040

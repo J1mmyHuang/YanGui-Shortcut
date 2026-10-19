@@ -1,28 +1,28 @@
 # 闪念 · ShanNian Shortcut
 
-一个基于 iPhone Action Button 的中文语音助手，使用 Apple 原生的**备忘录、日历和提醒事项**。AI 理解自然语言，真正的创建和查询由设备上的快捷指令动作完成。
+一个基于 iPhone Action Button 的中文语音记事助手：按一下，直接说话，说完点按完成。AI 自动把你说的话分成多个事项，并归入 Apple 原生的**备忘录、提醒事项和日历**。真正的创建和查询由设备上的快捷指令动作完成。
 
 **官方版本免费提供。** 官方仓库：[J1mmyHuang/ShanNian-Shortcut](https://github.com/J1mmyHuang/ShanNian-Shortcut)。
 
-> **当前为实验性测试版。** 已生成 Apple 签名文件，26项离线测试通过；尚未完成 iPhone 实测，Notes 动作仍未通过插件校验，可能阻止流程运行。仅日期、没有具体时刻的提醒尚未实现。请先阅读[功能与限制](preview/FEATURES.md)。
+> **当前为实验性测试版。** 已生成 Apple 签名文件，40项离线测试通过；尚未完成 iPhone 实测，Notes 动作仍未通过插件校验，可能阻止流程运行。请先阅读[功能与限制](preview/FEATURES.md)。
 
 ## 选择使用方式
 
 | 你想做什么 | 入口 | 需要什么 |
 | --- | --- | --- |
-| 下载后直接试用 | [下载已签名的 ShanNian.shortcut](https://github.com/J1mmyHuang/ShanNian-Shortcut/releases/download/v0.1.0-preview.1/ShanNian.shortcut) | iPhone，以及自己选择的模型服务的 API 配置；无需 AI Agent 或重新构建 |
+| 下载后直接试用 | [仓库中的已签名 ShanNian.shortcut](preview/ShanNian.shortcut) | iPhone，以及自己选择的模型服务的 Base URL、模型 ID、API Key；无需 AI Agent 或重新构建 |
 | 审阅或重建现有测试版 | [本地构建指南](LOCAL_BUILD.md) | Python 3.10+；重新签名需要 Mac |
 | 让 AI Agent 修改或继续完善 | [通用构建任务](ci/BUILD_LOCAL_PROMPT.md) | 能读写仓库、运行终端的代码 Agent；动作资料与验证工具；签名需要 Mac |
 | 在 GitHub 上检查和重建 | [Actions 构建页面](https://github.com/J1mmyHuang/ShanNian-Shortcut/actions/workflows/build-shortcut.yml) | 使用已有生成器输出源 XML，无需模型构建密钥；签名在 Mac 完成 |
 
 ## 免构建试用
 
-当前版本：[v0.1.0-preview.1 发布页](https://github.com/J1mmyHuang/ShanNian-Shortcut/releases/tag/v0.1.0-preview.1)。在 Assets 中下载 `ShanNian.shortcut`；完整源码与使用说明包、SHA-256 校验文件也在同一发布页。
+下载[已签名测试版](preview/ShanNian.shortcut)，通过隔空投送或 iCloud Drive 在 iPhone 打开。GitHub Releases 的 [v0.1.0-preview.1](https://github.com/J1mmyHuang/ShanNian-Shortcut/releases/tag/v0.1.0-preview.1) 是上一版，流程不同；新版发布后这里改为发布页。私有仓库的下载需要相应访问权限。
 
-1. 下载[已签名测试版](https://github.com/J1mmyHuang/ShanNian-Shortcut/releases/download/v0.1.0-preview.1/ShanNian.shortcut)，通过隔空投送或 iCloud Drive 在 iPhone 打开，审查动作后添加到「快捷指令」。私有仓库的下载需要相应访问权限。
-2. 首次先从快捷指令 App 运行并选择文字输入，检查恢复备忘录动作是否可用，再逐项测试创建和查询。
-3. 每次运行填写自己的 **API Base URL、Model、API Key**。支持 OpenAI-compatible Chat Completions API；使用提供方支持的模型与密钥。构建阶段的 AI 登录不会自动提供运行时 API 额度。
-4. 按系统提示授予所需权限。验证后到「设置 → 操作按钮 → 快捷指令 → 闪念」绑定。
+1. 打开文件后，快捷指令 App 依次询问 **Base URL、模型 ID、API Key**。填写自己选择的模型服务的信息，支持 OpenAI-compatible Chat Completions API。这三项也是快捷指令最前面的三个文本动作，之后点开即可修改。
+2. 审查动作后添加，先在快捷指令 App 里运行一次，按系统提示授予麦克风、备忘录、日历、提醒事项等权限。
+3. 到「设置 → 操作按钮 → 快捷指令 → 闪念」绑定。
+4. 按一下操作按钮，直接说话；说完点按屏幕上的完成。通知会汇总每一项记到了哪里。
 
 这个入口省去本地构建与签名，但仍需 API 配置、设备授权和实测；当前不是已经验证可靠的开箱即用正式版。
 
@@ -36,9 +36,11 @@
 | Apple Calendar | `calendar.create` | `calendar.search` |
 | Apple Reminders | `reminder.create` | `reminder.search` |
 
-支持中文听写和文字输入。模型只能选择这六项操作或请求澄清；缺少时间、范围等信息时应先提问。当前版本一次处理一个操作，复合请求会明确要求拆分。查询最多10条，无结果时直接说明。没有删除、修改现有记录或标记完成的功能。
+**智能分类**：AI 判断每个事项的去向。有明确日期或时间的会议、活动进日历；要去做的待办和提醒进提醒事项；想法、信息和拿不准的内容进备忘录。**自动分段**：一次听写里的多件事各自归类，按顺序全部写入。日期说不准时不猜，改记为备忘录并保留原话。
 
-详细实现状态、仅日期提醒限制和 iPhone 测试清单见 [FEATURES.md](preview/FEATURES.md)。
+查询最多10条，无结果时直接说明。没有删除、修改现有记录或标记完成的功能。详细实现状态和 iPhone 测试清单见 [FEATURES.md](preview/FEATURES.md)。
+
+**接入方式**：API Key。Anthropic 要求第三方产品使用 API Key，OpenAI 的「Sign in with ChatGPT」需要本地回环监听，快捷指令无法提供，所以 OAuth 登录未接入，依据见 [FEATURES.md](preview/FEATURES.md#接入方式api-key)。
 
 ## 使用你习惯的 AI Agent
 
@@ -65,11 +67,11 @@
 
 ## 密钥、隐私与签名
 
-- **运行时 API Key**：在 iPhone 每次运行时输入，输入可见，未预填真实密钥。不要将 Key 改成快捷指令固定文本或默认值，否则可能随文件同步和分享。
-- **发送给模型的数据**：原话、澄清内容、设备当地时间和时区；认证 Key 发送到同一自选 API 提供方。当前测试版查得的本机笔记、日历和提醒记录仅在本机展示。
-- **原话恢复**：当前版本联网前先显示原话，经明确同意后保存一条恢复备忘录，以应对后续网络或权限动作直接中断。恢复笔记按备忘录/iCloud 设置同步；取消则结束。Notes 动作失败时可能无法保存。
+- **API Key**：在添加快捷指令时填写，保存在你自己的这条快捷指令里，可能随 iCloud 同步。仓库里的文件三项配置为空；分享、导出或上传自己的快捷指令之前先清空这三项。
+- **发送给模型的数据**：原话、设备当地时间和时区；认证 Key 发送到同一自选 API 提供方。查得的本机笔记、日历和提醒记录仅在本机展示。
+- **原话保护**：API 返回错误或内容不合格式时，原话自动存成备忘录「闪念原话（未处理）」。配置里的「原话备份」改为 `是` 后，每次联网前先存一份，网络直接中断时也能找回。
 - **Apple 签名**：本机发起 `anyone` 签名，Apple 会收到快捷指令副本验证。公开证书中有不透明标识，不应将签名视为匿名发布或功能安全认证。详见[签名说明](preview/SIGNING.md)。
-- **构建产物**：面向使用者的下载文件在 GitHub Releases；源码、签名快照及摘要在 `preview/`；临时输出放在被 Git 忽略的 `dist/`。不要提交真实密钥、Apple 登录凭据或个人应用数据。
+- **构建产物**：源码、签名快照及摘要在 `preview/`；面向使用者的发布文件在 GitHub Releases；临时输出放在被 Git 忽略的 `dist/`。不要提交真实密钥、Apple 登录凭据或个人应用数据。
 
 ## 相关文件
 

@@ -1,6 +1,6 @@
 # 本地构建「闪念」
 
-只想试用时，可直接下载 GitHub Releases 中的[已签名测试版](https://github.com/J1mmyHuang/ShanNian-Shortcut/releases/tag/v0.1.0-preview.1)，无需安装 AI Agent 或准备 Mac。当前 Notes 兼容性、仅日期提醒等限制仍然存在，详见 [FEATURES.md](preview/FEATURES.md)。
+只想试用时，可直接下载仓库中的[已签名测试版](preview/ShanNian.shortcut)，无需安装 AI Agent 或准备 Mac。当前 Notes 兼容性等限制仍然存在，详见 [FEATURES.md](preview/FEATURES.md)。
 
 本指南提供两条本地路线：使用现有 Python 生成器重建快照，或让你选择的 AI 编码 Agent 继续完善。选择具备文件和终端能力的 AI Agent 即可；最终 Apple 签名需要 Mac。
 
@@ -21,7 +21,7 @@
    cd ShanNian-Shortcut
    ```
 
-构建现有快照和离线测试不调用模型，不需要 API Key。使用 AI Agent 改造时，其模型登录、订阅或 API 费用由你选择的工具决定。iPhone 上运行的 BYOK 模型服务需要单独配置。
+构建现有快照和离线测试不调用模型，不需要 API Key。使用 AI Agent 改造时，其模型登录、订阅或 API 费用由你选择的工具决定。iPhone 上运行的 BYOK 模型服务在添加快捷指令时填写 Base URL、模型 ID、API Key。
 
 ## 重建现有测试版（无需 AI Agent）
 
@@ -34,7 +34,7 @@ python3 ci/validate_plist.py preview/ShanNian.xml
 plutil -lint preview/ShanNian.xml
 ```
 
-这会更新 `preview/ShanNian.xml`，保留当前实现及其已知限制。26项测试是离线模拟，不是 Apple 的实际动作引擎。完整 Shortcuts Playground 检查仍有 Notes 错误，见 `preview/validation-ios27.log`；重建不会自动修复这些问题，也不会更新旧签名。
+这会更新 `preview/ShanNian.xml`，保留当前实现及其已知限制。40项测试是离线模拟，不是 Apple 的实际动作引擎。完整 Shortcuts Playground 检查仍有 Notes 错误，见 `preview/validation-ios27.log`；重建不会自动修复这些问题，也不会更新旧签名。
 
 如需为重建后的 XML 生成新的**测试版**签名，在 Mac 上执行：
 
@@ -42,11 +42,12 @@ plutil -lint preview/ShanNian.xml
 mkdir -p dist
 cp preview/ShanNian.xml dist/ShanNian.xml
 cp dist/ShanNian.xml dist/ShanNian-unsigned-backup.xml
-shortcuts sign --mode anyone --input dist/ShanNian.xml --output dist/ShanNian.shortcut
+cp dist/ShanNian.xml dist/ShanNian-sign-input.shortcut
+shortcuts sign --mode anyone --input dist/ShanNian-sign-input.shortcut --output dist/ShanNian.shortcut
 test -s dist/ShanNian.shortcut
 ```
 
-签名失败时保留 XML 和错误日志；有 Shortcuts Playground 时可使用其 `scripts/sign_shortcut.sh`，该脚本会归档源文件并处理部分 plist 格式重试。签名成功不表示 Notes 兼容性已解决。
+输入文件使用 `.shortcut` 扩展名和与快捷指令同名的文件名；`.xml` 扩展名或无关文件名会得到“isn’t in the correct format”。带沙箱的 Agent 需在沙箱外执行 `shortcuts sign`，沙箱内该进程会以 133 退出。签名失败时保留 XML 和错误日志；有 Shortcuts Playground 时可使用其 `scripts/sign_shortcut.sh`，该脚本会归档源文件并处理部分 plist 格式重试。签名成功不表示 Notes 兼容性已解决。
 
 ## 使用任意具备工具能力的 AI Agent
 
@@ -86,6 +87,6 @@ git clone https://github.com/viticci/shortcuts-playground-plugin.git .ci-tools/s
 
 ## 导入和测试
 
-通过隔空投送或 iCloud Drive 在 iPhone 打开已签名 `.shortcut`，审查动作后导入。先用文字输入测试恢复备忘录，再测试 Notes、Calendar、Reminders 的创建和查询，核对权限与日期。确认后在「设置 → 操作按钮 → 快捷指令 → 闪念」绑定。
+通过隔空投送或 iCloud Drive 在 iPhone 打开已签名 `.shortcut`，依次填写 Base URL、模型 ID、API Key，审查动作后导入。先在快捷指令 App 里运行，测试 Notes、Calendar、Reminders 的创建和查询，核对权限与日期。确认后在「设置 → 操作按钮 → 快捷指令 → 闪念」绑定，按一下说话，说完点按完成。
 
 遇到未知动作或导入错误时，将具体错误反馈给维护者或你的 Agent。静态结构检查、离线测试和签名都不能代替 iPhone 实测。

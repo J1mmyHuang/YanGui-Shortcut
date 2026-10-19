@@ -10,23 +10,23 @@ Read:
 
 Goal:
 - One iPhone Action Button compatible shortcut called 闪念.
-- Start with Dictate Text (or accept text input) and parse Chinese natural language.
-- BYOK OpenAI-compatible Chat Completions API: user-provided base URL, model name, runtime API key on their own iPhone. Never hardcode real credentials.
-- Allow exactly six genuine native iOS operations, or clarification: note.create, note.search, calendar.create, calendar.search, reminder.create, reminder.search, clarify.
+- One press of the Action Button starts Dictate Text (Chinese) directly; parse the Chinese natural language and split it into independent items.
+- BYOK OpenAI-compatible Chat Completions API: base URL, model name and API key asked as import questions and held in three Text actions at the top of the shortcut. Keep them blank in the repository; never hardcode real credentials.
+- Allow exactly six genuine native iOS operations: note.create, note.search, calendar.create, calendar.search, reminder.create, reminder.search. The AI classifies each item into Notes, Reminders or Calendar.
 - Create/search Apple Notes, Calendar and Reminders using actual Shortcuts actions / supported iOS AppIntents. Do not use macOS AppleScript, fake generated answers, Google/Notion/Drafts, broad access to unrelated apps, or extra privileges.
 - For searches, retrieve real native app data before answering. Bound candidate counts and only send necessary snippets to the selected AI endpoint.
-- Parse dates from the device's current local date and timezone. Ask if important details are missing; do not invent times.
-- Preserve original dictated text. If API fails, offer optional save-as-Apple-Note with explicit confirmation.
+- Parse dates from the device's current local date and timezone. Do not invent times; uncertain dates become notes that keep the original wording.
+- Preserve original dictated text. If the API fails, save it automatically as an Apple Note; offer a backup switch that saves it before every request.
 - Notifications must describe real successes, not a guessed success.
-- For multi-intent utterances either implement operations[] and execute all, or clearly reject and request separate utterances, never silently drop actions.
+- For multi-intent utterances implement operations[] and execute every item in order; a failing item falls back to a note without blocking the others.
 - Do not allow updates, deletes, completion changes, untrusted arbitrary actions or network URLs.
 - Only send data to the configured model provider.
 
 API schema example:
 {
   "operations": [{
-    "action":"note.create|note.search|calendar.create|calendar.search|reminder.create|reminder.search|clarify",
-    "title":"","body":"","query":"","start":"","end":"","due":"","all_day":false,"include_completed":false,"question":""
+    "action":"note.create|note.search|calendar.create|calendar.search|reminder.create|reminder.search",
+    "title":"","body":"","query":"","start":"","end":"","due":"","all_day":false,"include_completed":false
   }]
 }
 Ensure parsing, expected field type checks, and routing are robust.

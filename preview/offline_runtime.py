@@ -24,8 +24,9 @@ class _Stop(Exception):
 
 class OfflineRuntime:
     def __init__(self, document, *, responses=(), records=None, answers=None,
-                 menus=(), now=None, timezone='Australia/Melbourne'):
-        self.actions = document['WFWorkflowActions']
+                 menus=(), now=None, timezone='Australia/Melbourne', import_answers=None):
+        self.actions = deepcopy(document['WFWorkflowActions'])
+        self._apply_import_questions(document, import_answers or {})
         self.responses = deque(deepcopy(list(responses)))
         self.records = deepcopy(records or {})
         self.answers = dict(answers or {})
@@ -41,6 +42,23 @@ class OfflineRuntime:
         self.reads = []
         self.executed = []
         self.blocks = self._blocks()
+
+    def _apply_import_questions(self, document, import_answers):
+        # Simulates the answers a person types when adding the shortcut: each question
+        # overwrites one parameter of the action it points at. Every question must be
+        # answered by exactly one fixture so a mis-wired ActionIndex cannot pass silently.
+        used = set()
+        for question in document.get('WFWorkflowImportQuestions', []):
+            matches = [key for key in import_answers if key in question['Text']]
+            if len(matches) != 1:
+                raise ValueError(f"Import question needs exactly one fixture answer: {question['Text']!r}")
+            action = self.actions[question['ActionIndex']]
+            if question['ParameterKey'] not in action['WFWorkflowActionParameters']:
+                raise ValueError(f"Import question points at the wrong action: {question['Text']!r}")
+            action['WFWorkflowActionParameters'][question['ParameterKey']] = import_answers[matches[0]]
+            used.add(matches[0])
+        if used != set(import_answers):
+            raise ValueError(f'Unused import answers: {set(import_answers) - used}')
 
     def _blocks(self):
         stack, blocks = [], {}
@@ -188,6 +206,8 @@ class OfflineRuntime:
             return json.dumps(value, ensure_ascii=False, default=self._text)
         if isinstance(value, bool):
             return '1' if value else '0'
+        if isinstance(value, float) and value.is_integer():
+            return str(int(value))
         if isinstance(value, datetime):
             return value.isoformat()
         return str(value)
@@ -317,6 +337,10 @@ class OfflineRuntime:
                 return date.astimezone(self.zone).strftime('%Y-%m-%d')
             if pattern == "yyyy-MM-dd'T'HH:mm:ssXXXXX":
                 return date.astimezone(self.zone).isoformat(timespec='seconds')
+            if pattern in ("M'月'd'日'", "M'月'd'日' HH:mm"):
+                local = date.astimezone(self.zone)
+                text = f'{local.month}月{local.day}日'
+                return text + (f' {local:%H:%M}' if pattern.endswith('HH:mm') else '')
             raise NotImplementedError(f'Date pattern {pattern}')
         if name == 'dictionary':
             return self._value(p['WFItems'])
@@ -368,10 +392,14 @@ class OfflineRuntime:
             raise NotImplementedError(operation)
         if name == 'adjustdate':
             date, quantity = self._date(self._value(p['WFDate'])), p['WFDuration']['Value']
-            if quantity['Unit'] != 'sec':
-                raise NotImplementedError(quantity['Unit'])
-            seconds = float(self._value(quantity['Magnitude']))
-            return date + timedelta(seconds=(-seconds if p['WFAdjustOperation'] == 'Subtract' else seconds))
+            magnitude = float(self._value(quantity['Magnitude']))
+            sign = -1 if p['WFAdjustOperation'] == 'Subtract' else 1
+            if quantity['Unit'] == 'sec':
+                return date + timedelta(seconds=sign * magnitude)
+            if quantity['Unit'] == 'days':
+                # Calendar days: wall-clock arithmetic on an aware datetime keeps local time.
+                return (date.astimezone(self.zone) + timedelta(days=sign * magnitude))
+            raise NotImplementedError(quantity['Unit'])
         if name == 'showresult':
             self.displays.append(self._text(self._value(p['Text'])))
             return None
@@ -380,6 +408,7 @@ class OfflineRuntime:
             return None
         if name == 'downloadurl':
             self.requests.append({'url': self._value(p['WFURL']), 'method': p['WFHTTPMethod'],
+                                  'headers': self._value(p['WFHTTPHeaders']),
                                   'json': self._value(p['WFJSONValues'])})
             if not self.responses:
                 raise ValueError('No synthetic response remains; no real request was attempted')
@@ -402,7 +431,8 @@ class OfflineRuntime:
             return record
         if name == 'addnewreminder':
             record = {'kind': 'reminder', 'title': self._value(p['WFCalendarItemTitle']),
-                      'alert': p['WFAlertEnabled'], 'due': self._value(p.get('WFAlertCustomTime'))}
+                      'alert': p['WFAlertEnabled'], 'due': self._value(p.get('WFAlertCustomTime')),
+                      'notes': self._value(p.get('WFCalendarItemNotes', ''))}
             self.writes.append(record)
             return record
         if name.startswith('filter.'):

@@ -1,20 +1,19 @@
 {
   "workflow_name": "闪念",
-  "action_count": 833,
-  "xml_bytes": 581138,
-  "xml_sha256": "8c12aca2970545fcea785f32946d2bfdcffebbce62e35e6151be3bc5274ca254",
+  "action_count": 1050,
+  "xml_bytes": 717484,
+  "xml_sha256": "a9813ae61d2a7279ee0d9a8357c0479405a6c10ebf546bdb4a04e0e772197818",
   "plugin_version": "1.2.1",
   "target": "iOS 27 (macOS 26 cross-check)",
-  "full_plugin_validation": "FAILED: Notes action catalog/schema conflict",
+  "full_plugin_validation": "FAILED: 15 Create Note actions lack AppIntentDescriptor/title (legacy Notes format, no iOS evidence); 3 empty-text findings are the import-question targets (the plugin's own golden example 6a18b76843ac45c384ac3400f3740997 triggers the same check)",
   "real_device_tests": false,
   "live_api_tests": false,
-  "signed_bytes": 86221,
-  "signed_sha256": "2a45c33fc2bea6e83514239676ae9a0ad305371c3b605f72e1eb2ed0144ee3ff",
+  "signed_bytes": 99274,
+  "signed_sha256": "f123d5702e069bc6effc7bdcc21716b1c4b63b07a19d508eaf4cb7b2f42680cb",
   "signed_magic": "AEA1",
   "signing_mode": "anyone",
-  "archive_matches_source": true,
   "offline_tests": {
-    "passed": 26,
+    "passed": 40,
     "failed": 0,
     "apple_runtime": false
   },
@@ -28,5 +27,8 @@
   ],
   "certificate_contains_email": false,
   "license": "AGPL-3.0-or-later",
-  "official_source_notice": "first non-executing Comment"
+  "official_source_notice": "first non-executing Comment",
+  "import_questions": 3,
+  "interaction": "Action Button press starts Dictate Text (zh-CN, On Tap); second-press stop untested on device",
+  "archive_matches_source": true
 }

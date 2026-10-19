@@ -15,9 +15,13 @@ if (ROOT / 'build_shannian.py').exists():
 
 def operation(action='note.create', **changes):
     d = dict(action=action, title='标题', body='原话："你好"\n下一行\\路径', query='',
-             start='', end='', due='', all_day=False, include_completed=False, question='')
+             start='', end='', due='', all_day=False, include_completed=False)
     d.update(changes)
     return d
+
+
+def identifiers(doc):
+    return [a['WFWorkflowActionIdentifier'] for a in doc['WFWorkflowActions']]
 
 
 class BuildContractTests(unittest.TestCase):
@@ -27,23 +31,23 @@ class BuildContractTests(unittest.TestCase):
     def matches(self, value):
         return bool(re.fullmatch(MOD.CONTRACT_REGEX.replace(r'\z', r'\Z'), value))
 
-    def test_all_six_actions_and_clarification_accept_real_json_strings(self):
+    def test_all_six_actions_accept_real_json_strings(self):
         for action in ['note.create','note.search','calendar.create','calendar.search',
-                       'reminder.create','reminder.search','clarify']:
+                       'reminder.create','reminder.search']:
             for ascii_mode in (True, False):
                 s = json.dumps({'operations':[operation(action, title='中文🌟')]}, ensure_ascii=ascii_mode)
                 self.assertTrue(self.matches(s), (action, ascii_mode))
 
     def test_boolean_type_confusion_and_nonallowlisted_actions_fail(self):
         for change in [dict(all_day='false'),dict(include_completed=1),dict(title=[]),
-                       dict(action='reminder.delete'),dict(action='note.update')]:
+                       dict(action='reminder.delete'),dict(action='note.update'),dict(action='clarify')]:
             self.assertFalse(self.matches(json.dumps({'operations':[operation(**change)]})))
 
     def test_missing_duplicate_extra_or_reordered_fields_fail_closed(self):
         base=json.dumps({'operations':[operation()]}, ensure_ascii=False)
         self.assertFalse(self.matches(base.replace('"title": "标题", ','')))
         self.assertFalse(self.matches(base.replace('"title": "标题"','"title":"标题","title":"第二个"')))
-        self.assertFalse(self.matches(base.replace('"question": ""','"question":"", "url":"https://other.invalid"')))
+        self.assertFalse(self.matches(base.replace('"include_completed": false','"include_completed": false, "url":"https://other.invalid"')))
         self.assertFalse(self.matches(base.replace('"action": "note.create", "title": "标题"',
                                                     '"title": "标题", "action": "note.create"')))
 
@@ -54,12 +58,19 @@ class BuildContractTests(unittest.TestCase):
                     valid.replace('"title": "\\u6807\\u9898"',r'"title":"\uD800"')]:
             self.assertFalse(self.matches(bad), bad)
 
-    def test_composite_operations_remain_visible_for_explicit_split_guard(self):
-        s=json.dumps({'operations':[operation(),operation('reminder.create')]})
+    def test_multiple_operations_pass_the_contract_and_are_processed_in_a_loop(self):
+        s=json.dumps({'operations':[operation(),operation('reminder.create'),operation('calendar.create')]})
         self.assertTrue(self.matches(s))
-        source=(ROOT/'ShanNian.xml').read_text()
-        self.assertIn('一次只执行一件事',source)
-        self.assertIn('多个操作',source)
+        self.assertTrue(self.matches(json.dumps({'operations':[]})))
+        ids=identifiers(MOD.build())
+        self.assertIn('is.workflow.actions.repeat.each',ids)
+
+    def test_prompt_classifies_into_three_apps_and_splits_items(self):
+        prompt=MOD.SYSTEM_PROMPT
+        for needle in ['calendar.create','reminder.create','note.create','拆成互相独立的事项','一律用 note.create']:
+            self.assertIn(needle,prompt)
+        self.assertNotIn('clarify',prompt)
+        self.assertNotIn('question',prompt)
 
     def test_native_request_roundtrip_has_no_text_json_interpolation(self):
         doc=MOD.build()
@@ -77,30 +88,52 @@ class BuildContractTests(unittest.TestCase):
         self.assertTrue(all(x['WFItemType']==3 and 'WFKey' not in x for x in values))
         self.assertEqual(p['ShowHeaders'],False)
 
-    def test_only_allowed_app_actions_bounded_searches_and_confirmed_backup(self):
+    def test_only_allowed_app_actions_and_bounded_searches(self):
         acts=MOD.build()['WFWorkflowActions']
-        ids=[a['WFWorkflowActionIdentifier'] for a in acts]
-        for aid in ids:
+        for aid in identifiers(MOD.build()):
             self.assertFalse(any(x in aid.lower() for x in ['delete','setters.','updatereminder','runscript','runjavascrip','sendmessage','clipboard']))
         for a in acts:
             if a['WFWorkflowActionIdentifier'].startswith('is.workflow.actions.filter.'):
                 p=a['WFWorkflowActionParameters']
                 self.assertTrue(p['WFContentItemLimitEnabled'])
                 self.assertEqual(p['WFContentItemLimitNumber'],10)
-        first_note=ids.index('com.apple.mobilenotes.SharingExtension')
-        first_request=ids.index('is.workflow.actions.downloadurl')
-        self.assertLess(first_note, first_request)
-        self.assertIn('is.workflow.actions.choosefrommenu',ids[:first_note])
 
-    def test_runtime_key_is_asked_and_not_baked_into_source(self):
+    def test_button_press_starts_dictation_directly(self):
+        ids=identifiers(MOD.build())
+        for banned in ['is.workflow.actions.ask','is.workflow.actions.choosefrommenu']:
+            self.assertNotIn(banned,ids)
+        dictate=[a['WFWorkflowActionParameters'] for a in MOD.build()['WFWorkflowActions']
+                 if a['WFWorkflowActionIdentifier']=='is.workflow.actions.dictatetext']
+        self.assertEqual(len(dictate),1)
+        self.assertEqual(dictate[0]['WFSpeechLanguage'],'zh-CN')
+        self.assertEqual(dictate[0]['WFDictateTextStopListening'],'On Tap')
+        self.assertLess(ids.index('is.workflow.actions.dictatetext'),ids.index('is.workflow.actions.downloadurl'))
+
+    def test_config_is_at_the_front_and_asked_at_import(self):
+        doc=MOD.build(); acts=doc['WFWorkflowActions']
+        self.assertTrue(acts[0]['WFWorkflowActionParameters']['WFCommentActionText'].startswith('这是一个免费的开源软件'))
+        questions=doc['WFWorkflowImportQuestions']
+        self.assertEqual(len(questions),3)
+        dictate=identifiers(doc).index('is.workflow.actions.dictatetext')
+        for q in questions:
+            action=acts[q['ActionIndex']]
+            self.assertEqual(action['WFWorkflowActionIdentifier'],'is.workflow.actions.gettext')
+            self.assertEqual(action['WFWorkflowActionParameters']['WFTextActionText'],'')
+            self.assertEqual(q['ParameterKey'],'WFTextActionText')
+            self.assertEqual(q['Category'],'Parameter')
+            self.assertLess(q['ActionIndex'],12)
+            self.assertLess(q['ActionIndex'],dictate)
+        self.assertEqual([q['Text'].count('Base URL') > 0 for q in questions],[True,False,False])
+        self.assertIn('API Key',questions[2]['Text'])
+        self.assertIn('模型',questions[1]['Text'])
+
+    def test_runtime_key_is_blank_and_not_baked_into_source(self):
         doc=MOD.build()
         text=json.dumps(doc,ensure_ascii=False)
         self.assertNotRegex(text,r'sk-(?:proj-)?[A-Za-z0-9_-]{25,}')
-        asks=[a['WFWorkflowActionParameters'] for a in doc['WFWorkflowActions']
-              if a['WFWorkflowActionIdentifier']=='is.workflow.actions.ask']
-        key_asks=[a for a in asks if 'API Key' in str(a.get('WFAskActionPrompt',''))]
-        self.assertEqual(len(key_asks),1)
-        self.assertNotIn('WFAskActionDefaultAnswer',key_asks[0])
+        for q in doc['WFWorkflowImportQuestions']:
+            self.assertEqual(q['DefaultValue'],'')
+        self.assertNotIn('https://api.openai.com',text)
 
     def test_epoch_action_uses_candidate_as_end_date(self):
         b=MOD.Builder(); candidate=b.named('Candidate Date'); b.epoch(candidate)
@@ -120,6 +153,11 @@ class BuildContractTests(unittest.TestCase):
         calendar=[a['WFWorkflowActionParameters'] for a in doc['WFWorkflowActions']
                   if a['WFWorkflowActionIdentifier']=='is.workflow.actions.filter.calendarevents']
         self.assertTrue(any(any(r['Property']=='Title' for r in p['WFContentItemFilter']['Value']['WFActionParameterFilterTemplates']) for p in calendar))
+
+    def test_backup_switch_defaults_to_off(self):
+        doc=MOD.build(); acts=doc['WFWorkflowActions']
+        i=next(n for n,a in enumerate(acts) if a['WFWorkflowActionParameters'].get('WFVariableName')=='Backup Transcript')
+        self.assertEqual(acts[i-1]['WFWorkflowActionParameters']['WFTextActionText']['Value']['string'],'否')
 
 
 if __name__=='__main__':
