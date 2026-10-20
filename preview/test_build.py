@@ -284,6 +284,15 @@ class BuildContractTests(unittest.TestCase):
             self.assertNotIn(debug,json.dumps(shipped,ensure_ascii=False))
         self.assertNotIn('WFWorkflowHasShortcutInputVariables',shipped)
 
+    def test_real_notes_test_variant_uses_the_shipped_notes_actions(self):
+        def notes(doc):
+            return [(a['WFWorkflowActionIdentifier'],a['WFWorkflowActionParameters']['AppIntentDescriptor'],
+                     sorted(k for k in a['WFWorkflowActionParameters'] if k!='UUID'))
+                    for a in doc['WFWorkflowActions'] if a['WFWorkflowActionIdentifier'].startswith('com.apple.mobilenotes.')]
+        shipped=notes(MOD.build());variant=notes(MOD.build(test=True,real_notes=True))
+        self.assertEqual(sorted(map(str,shipped)),sorted(map(str,variant)))
+        self.assertGreater(len(shipped),10)
+
     def test_boolean_flags_are_compared_as_text_never_as_numbers(self):
         # A JSON boolean in a numeric If raised "choose a value for each parameter" on a real Mac engine.
         acts=MOD.build()['WFWorkflowActions']

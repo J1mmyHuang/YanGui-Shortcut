@@ -433,6 +433,15 @@ class MacTestVariantTests(RuntimeCase):
         for text in ['📝 清单：购物清单（2 项）', '☑ 水果', '☑ 蔬菜', '📝 备忘录：想法']:
             self.assertIn(text, rt.output)
 
+    def test_real_notes_switch_writes_notes_and_checklist_items(self):
+        rt = OfflineRuntime(build(test=True, real_notes=True), shortcut_input='测试：买菜清单',
+                            responses=[response(operation('note.create', title='买菜清单', body='西红柿\n- 鸡蛋', checklist=True),
+                                                operation('note.create', title='想法', body='内容'))])
+        rt.run()
+        self.assertEqual([(w['kind'], w['title'], w.get('checklist')) for w in rt.writes],
+                         [('note', '买菜清单', ['西红柿', '鸡蛋']), ('note', '想法', [])])
+        self.assertIn('📝 清单：买菜清单（2 项）', rt.output)
+
     def test_failures_are_returned_as_output_not_dialogs(self):
         rt = self.run_variant([{'error': {'message': 'synthetic quota'}}])
         self.assertIn('synthetic quota', rt.output)

@@ -2,7 +2,7 @@
 """在 Mac 上运行已导入的「闪念测试」快捷指令：把原话作为快捷指令输入，打印它的输出和系统报错。
 
 用法：run_mac_test.py 快捷指令名 "原话" [超时秒数]
-测试版由 `python3 preview/build_shannian.py --test` 生成（dist/ShanNian-Test.xml），签名后双击导入（无导入问题）。
+测试版由 `python3 preview/build_shannian.py --test` 生成（dist/ShanNian-Test.xml），签名后双击导入（无导入问题）；加 `--real-notes` 生成时备忘录真实写入。
 原话格式：`阶段|||回复JSON|||原话` 用给定回复、不发请求；`probeN|||原话` 只运行第 N 个格式探针。
 需要在沙箱外运行；日历、提醒事项的写入是真实写入，测试原话建议带「测试」二字，便于事后清理。
 """

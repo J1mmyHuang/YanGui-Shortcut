@@ -18,6 +18,7 @@ test_numeric_parameters_use_the_encodings_of_real_exports (test_build.BuildContr
 test_only_allowed_app_actions_and_bounded_searches (test_build.BuildContractTests) ... ok
 test_prompt_classifies_into_three_apps_and_splits_items (test_build.BuildContractTests) ... ok
 test_protocol_specific_headers_and_bodies (test_build.BuildContractTests) ... ok
+test_real_notes_test_variant_uses_the_shipped_notes_actions (test_build.BuildContractTests) ... ok
 test_runtime_key_is_blank_and_not_baked_into_source (test_build.BuildContractTests) ... ok
 test_time_difference_compares_the_two_real_dates_without_a_reference_date (test_build.BuildContractTests) ... ok
 test_value_sources_follow_what_the_mac_engine_accepts (test_build.BuildContractTests) ... ok
@@ -69,6 +70,7 @@ test_stage_stops_at_the_first_checkpoint_at_or_after_the_stage (test_runtime.Mac
 test_failures_are_returned_as_output_not_dialogs (test_runtime.MacTestVariantTests) ... ok
 test_input_text_is_processed_and_the_report_is_returned_as_output (test_runtime.MacTestVariantTests) ... ok
 test_notes_are_text_only_and_checklist_items_are_listed (test_runtime.MacTestVariantTests) ... ok
+test_real_notes_switch_writes_notes_and_checklist_items (test_runtime.MacTestVariantTests) ... ok
 test_anthropic_base_url_forms_resolve_to_one_messages_endpoint (test_runtime.ProtocolAndModelTests) ... ok
 test_anthropic_failures_keep_transcript_and_show_reason (test_runtime.ProtocolAndModelTests) ... ok
 test_anthropic_protocol_request_shape (test_runtime.ProtocolAndModelTests) ... ok
@@ -85,6 +87,6 @@ test_provider_error_text_is_shown_without_leaking_the_key (test_runtime.Protocol
 test_unexpected_reply_shows_the_start_of_the_response (test_runtime.ProtocolAndModelTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 85 tests in 2.179s
+Ran 87 tests in 2.385s
 
 OK

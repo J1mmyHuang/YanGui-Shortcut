@@ -13,7 +13,7 @@
   "signed_magic": "AEA1",
   "signing_mode": "anyone",
   "offline_tests": {
-    "passed": 85,
+    "passed": 87,
     "failed": 0,
     "apple_runtime": false
   },
@@ -21,7 +21,7 @@
   "plutil": "PASS",
   "source": "ShanNian.xml",
   "signed": "ShanNian.shortcut",
-  "build_status": "preview: Mac engine scenarios pass; Notes validation unresolved; iPhone untested",
+  "build_status": "preview: Mac engine scenarios pass including real Notes and checklists; Notes plugin validation unresolved; iPhone untested",
   "signed_authentication_keys": [
     "SigningCertificateChain"
   ],
@@ -40,18 +40,19 @@
     "date": "2026-10-20",
     "engine": "macOS 26 Shortcuts (shortcuts run), test variant from build_shannian.py --test",
     "passed": [
-      "note.create (text only on Mac)",
+      "note.create with real Notes actions (--real-notes)",
+      "note.create checklist: 4 checkable items confirmed in the Notes app",
+      "note.create fallback from an invalid calendar date",
+      "note.search",
       "calendar.create timed",
       "calendar.create all-day",
       "reminder.create timed",
       "reminder.create date only",
       "reminder.create vague time",
-      "note.create checklist (text only on Mac)"
+      "reminder.search by keyword"
     ],
     "not_run": [
-      "Notes app actions",
       "calendar.search (no calendar read permission)",
-      "note.search",
       "anthropic protocol",
       "/models picker",
       "dictation"
