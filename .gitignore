@@ -6,3 +6,7 @@ __pycache__/
 
 /handoff.md
 /AGENTS.md
+
+# Local run logs stay out of commits. The validation records already tracked in preview/
+# remain tracked; a new record needs git add -f.
+*.log

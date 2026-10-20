@@ -442,6 +442,18 @@ class MacTestVariantTests(RuntimeCase):
                          [('note', '买菜清单', ['西红柿', '鸡蛋']), ('note', '想法', [])])
         self.assertIn('📝 清单：买菜清单（2 项）', rt.output)
 
+    def test_a_config_line_supplies_the_api_settings_for_one_run(self):
+        config = json.dumps({'protocol': 'openai', 'base_url': 'https://api.example.test/v1/', 'key': 'k-local', 'model': 'm-local'})
+        rt = self.run_variant([response(operation('reminder.create', title='买牛奶'))],
+                              utterance=f'config={config}\n999999|||测试：提醒我买牛奶')
+        self.assertEqual(rt.requests[0]['url'], 'https://api.example.test/v1/chat/completions')
+        self.assertEqual(rt.requests[0]['headers']['Authorization'], 'Bearer k-local')
+        self.assertEqual(rt.requests[0]['json']['model'], 'm-local')
+        self.assertIn('测试：提醒我买牛奶', rt.requests[0]['json']['messages'][1]['content'])
+        self.assertNotIn('config=', rt.requests[0]['json']['messages'][1]['content'])
+        self.assertNotIn('k-local', rt.output)
+        self.assertEqual([w['title'] for w in rt.writes], ['买牛奶'])
+
     def test_failures_are_returned_as_output_not_dialogs(self):
         rt = self.run_variant([{'error': {'message': 'synthetic quota'}}])
         self.assertIn('synthetic quota', rt.output)

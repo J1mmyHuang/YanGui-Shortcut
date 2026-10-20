@@ -109,8 +109,9 @@ OAuth 登录未接入，原因如下：
 ## 校验结果与遗留问题
 
 - `plistlib` 读取实际交付 XML；`plutil -lint` 通过；1251 个动作，UUID 唯一，由本机 `uuidgen` 生成。
-- 87 项离线测试通过，覆盖 JSON 契约、多事项循环、三类分类路由、失败改存、全天事件边界、配置接线（导入问题 → 请求地址、认证头、模型）、两种协议的请求头与请求体、Base URL 规整、/models 选模型及失败、错误原文显示且不泄露 Key、空配置与空听写、原话备份、查询边界，以及 Mac 引擎实测得到的取值规则。结果见 `offline-tests.log`。解释器是自建模拟器，不是 Apple Shortcuts 引擎；它已按实测改成：内层循环用「重复项目 2」、空文本也算「有值」、格式化日期只认原生写法。
-- Mac 引擎实测：7 类写入场景通过；用真实备忘录动作的测试版写入普通备忘录、买菜清单和改存备忘录，备忘录查询能查回。见 `validation-mac-engine.log`。
+- 88 项离线测试通过，覆盖 JSON 契约、多事项循环、三类分类路由、失败改存、全天事件边界、配置接线（导入问题 → 请求地址、认证头、模型）、两种协议的请求头与请求体、Base URL 规整、/models 选模型及失败、错误原文显示且不泄露 Key、空配置与空听写、原话备份、查询边界，以及 Mac 引擎实测得到的取值规则。结果见 `offline-tests.log`。解释器是自建模拟器，不是 Apple Shortcuts 引擎；它已按实测改成：内层循环用「重复项目 2」、空文本也算「有值」、格式化日期只认原生写法。
+- Mac 引擎实测：7 类写入场景通过；用真实备忘录动作的测试版写入普通备忘录、买菜清单和改存备忘录，备忘录查询能查回。
+- 真实 API 端到端（openai 协议，用户自己的模型）：一句话里的日历、提醒、备忘录（含清单）各自拆成一项，分别写入三个 App，时间按设备时间换算正确，用户逐一确认。见 `validation-mac-engine.log`。
 - **Shortcuts Playground 1.2.1 validator 整体仍失败**。最终日志见 `validation-ios27.log`、`validation-macos26.log`：
   - 19 处 Create Note 报「缺 title/name 参数」：插件按 macOS 的 `name` + `contents` 参数检查，而 iPhone 导出的动作只有 `WFCreateNoteInput`，所以是误报。iOS27 目标另把 Create Note 与 Find Notes 标为 macOS 专用，因为该插件的 iOS 快照不含任何 Notes 动作。
   - 1 处「未知 AppIntent 标识」：`com.apple.mobilenotes.CreateChecklistItemLinkAction`。插件只收录了 macOS 的 `com.apple.Notes.*` 标识，iPhone 导出样本里的标识是 `com.apple.mobilenotes.*`。
@@ -159,7 +160,7 @@ OAuth 登录未接入，原因如下：
 - [ ] 401/额度不足、HTML 响应、离线、拒绝 Calendar/Reminders 权限：核对原话备份开关两种取值下的结果。
 - [ ] 听写为空时的提示；拒绝麦克风权限后重新运行。
 
-本机完成了构建、静态/离线检查、签名，以及 Mac 引擎上的写入场景实测（含真实备忘录与清单）；**没有执行这些 iPhone 验收测试。**
+本机完成了构建、静态/离线检查、签名，以及 Mac 引擎上的写入场景实测（含真实备忘录与清单、真实 API 一句话三件事）；**没有执行这些 iPhone 验收测试。**
 
 ## 依据与重建
 

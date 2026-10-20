@@ -67,6 +67,7 @@ test_every_plain_action_is_followed_by_one_checkpoint (test_runtime.MacTestVaria
 test_plain_input_runs_everything_and_lists_the_raw_fields (test_runtime.MacTestVariantDebugTests) ... ok
 test_reply_override_replaces_the_model_text (test_runtime.MacTestVariantDebugTests) ... ok
 test_stage_stops_at_the_first_checkpoint_at_or_after_the_stage (test_runtime.MacTestVariantDebugTests) ... ok
+test_a_config_line_supplies_the_api_settings_for_one_run (test_runtime.MacTestVariantTests) ... ok
 test_failures_are_returned_as_output_not_dialogs (test_runtime.MacTestVariantTests) ... ok
 test_input_text_is_processed_and_the_report_is_returned_as_output (test_runtime.MacTestVariantTests) ... ok
 test_notes_are_text_only_and_checklist_items_are_listed (test_runtime.MacTestVariantTests) ... ok
@@ -87,6 +88,6 @@ test_provider_error_text_is_shown_without_leaking_the_key (test_runtime.Protocol
 test_unexpected_reply_shows_the_start_of_the_response (test_runtime.ProtocolAndModelTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 87 tests in 2.385s
+Ran 88 tests in 2.407s
 
 OK

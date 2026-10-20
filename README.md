@@ -4,7 +4,7 @@
 
 **官方版本免费提供。** 官方仓库：[J1mmyHuang/ShanNian-Shortcut](https://github.com/J1mmyHuang/ShanNian-Shortcut)。
 
-> **当前为实验性测试版。** 已生成 Apple 签名文件，87 项离线测试通过；在 Mac 的 Shortcuts 引擎上实测了备忘录与可勾选的清单（真实写入备忘录 App）、备忘录查询、日历（有时间、全天）、提醒（带时刻、仅日期、模糊时间），不再出现「请为此操作中的每个参数选取值」（[实测记录](preview/validation-mac-engine.log)）。尚未完成 iPhone 实测，Notes 动作仍未通过插件校验。请先阅读[功能与限制](preview/FEATURES.md)。
+> **当前为实验性测试版。** 已生成 Apple 签名文件，88 项离线测试通过；在 Mac 的 Shortcuts 引擎上实测了备忘录与可勾选的清单（真实写入备忘录 App）、备忘录查询、日历（有时间、全天）、提醒（带时刻、仅日期、模糊时间），以及经真实 API 把一句话里的三件事分别写入日历、提醒事项和备忘录，不再出现「请为此操作中的每个参数选取值」（[实测记录](preview/validation-mac-engine.log)）。尚未完成 iPhone 实测，Notes 动作仍未通过插件校验。请先阅读[功能与限制](preview/FEATURES.md)。
 
 ## 选择使用方式
 

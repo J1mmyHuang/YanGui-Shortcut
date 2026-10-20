@@ -7,13 +7,13 @@
   "target": "iOS 27 (macOS 26 cross-check)",
   "full_plugin_validation": "FAILED (known false positives against a real iPhone export): 19 Create Note 'missing title/name' (iPhone export has only WFCreateNoteInput); 1 unknown AppIntent id com.apple.mobilenotes.CreateChecklistItemLinkAction (plugin knows only com.apple.Notes.*); 3 empty-text findings are the import-question targets (golden example 6a18b76843ac45c384ac3400f3740997 triggers the same check)",
   "real_device_tests": false,
-  "live_api_tests": "classification only: curl to the user's OpenAI-compatible model with the shortcut's request body",
+  "live_api_tests": "openai protocol through the Mac test variant (config passed at run time) and classification via curl, both with the user's own model",
   "signed_bytes": 119037,
   "signed_sha256": "f5c6f8b3c06c3efedf35dfa7f611e695b20247ae7117107461c955e68ead67cd",
   "signed_magic": "AEA1",
   "signing_mode": "anyone",
   "offline_tests": {
-    "passed": 87,
+    "passed": 88,
     "failed": 0,
     "apple_runtime": false
   },
@@ -49,13 +49,14 @@
       "reminder.create timed",
       "reminder.create date only",
       "reminder.create vague time",
-      "reminder.search by keyword"
+      "reminder.search by keyword",
+      "real API end to end (openai, user's model): one utterance split into calendar + reminder + note/checklist, written to the three apps and confirmed by the user"
     ],
     "not_run": [
       "calendar.search (no calendar read permission)",
       "anthropic protocol",
       "/models picker",
-      "dictation"
+      "dictation and Action Button"
     ]
   }
 }
