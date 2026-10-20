@@ -513,6 +513,11 @@ class ChecklistAndSearchGuardTests(RuntimeCase):
                 self.assertEqual((rt.writes[0]['title'], rt.writes[0]['checklist']), ('空清单', []))
                 self.assertFalse('is.workflow.actions.text.split' in rt.executed)
 
+    def test_literal_backslash_n_in_a_checklist_still_splits_into_items(self):
+        # Seen from a real model: the list came back as "可乐\\n橙汁\\n卷纸", a backslash and n instead of a line break.
+        rt = self.execute([response(operation('note.create', title='超市购物清单', body='可乐\\n橙汁\\r\\n卷纸', checklist=True))])
+        self.assertEqual(rt.writes[0]['checklist'], ['可乐', '橙汁', '卷纸'])
+
     def test_whitespace_or_symbol_only_lines_create_no_items(self):
         for body in ['   ', '☐\n☐', '\n\n']:
             with self.subTest(body=body):

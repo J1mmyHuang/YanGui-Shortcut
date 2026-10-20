@@ -23,6 +23,7 @@ test_runtime_key_is_blank_and_not_baked_into_source (test_build.BuildContractTes
 test_time_difference_compares_the_two_real_dates_without_a_reference_date (test_build.BuildContractTests) ... ok
 test_value_sources_follow_what_the_mac_engine_accepts (test_build.BuildContractTests) ... ok
 test_empty_checklist_text_never_reaches_split_text (test_runtime.ChecklistAndSearchGuardTests) ... ok
+test_literal_backslash_n_in_a_checklist_still_splits_into_items (test_runtime.ChecklistAndSearchGuardTests) ... ok
 test_time_comparisons_use_the_dates_themselves (test_runtime.ChecklistAndSearchGuardTests) ... ok
 test_whitespace_or_symbol_only_lines_create_no_items (test_runtime.ChecklistAndSearchGuardTests) ... ok
 test_all_day_event_ends_on_its_last_day (test_runtime.GeneratedRuntimeTests) ... ok
@@ -88,6 +89,6 @@ test_provider_error_text_is_shown_without_leaking_the_key (test_runtime.Protocol
 test_unexpected_reply_shows_the_start_of_the_response (test_runtime.ProtocolAndModelTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 88 tests in 2.407s
+Ran 89 tests in 2.390s
 
 OK

@@ -34,7 +34,7 @@ python3 ci/validate_plist.py preview/ShanNian.xml
 plutil -lint preview/ShanNian.xml
 ```
 
-这会更新 `preview/ShanNian.xml`，保留当前实现及其已知限制。88 项测试是离线模拟，不是 Apple 的实际动作引擎；Mac 引擎实测用 `python3 preview/build_shannian.py --test` 生成的测试版（加 `--real-notes` 时备忘录真实写入），步骤见 `handoff.md`，结果见 `preview/validation-mac-engine.log`。完整 Shortcuts Playground 检查仍有 Notes 错误，见 `preview/validation-ios27.log`；重建不会自动修复这些问题，也不会更新旧签名。
+这会更新 `preview/ShanNian.xml`，保留当前实现及其已知限制。89 项测试是离线模拟，不是 Apple 的实际动作引擎；Mac 引擎实测用 `python3 preview/build_shannian.py --test` 生成的测试版（加 `--real-notes` 时备忘录真实写入），步骤见 `handoff.md`，结果见 `preview/validation-mac-engine.log`。完整 Shortcuts Playground 检查仍有 Notes 错误，见 `preview/validation-ios27.log`；重建不会自动修复这些问题，也不会更新旧签名。
 
 如需为重建后的 XML 生成新的**测试版**签名，在 Mac 上执行：
 

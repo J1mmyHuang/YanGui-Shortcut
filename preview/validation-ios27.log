@@ -45,7 +45,7 @@ Snippet: {'UUID': 'B34AE2FA-10B3-45BD-AFB1-C54985098EC5'}
 - Notes create action missing title/name parameter at index 401
 - AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 477: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
 - Notes create action missing title/name parameter at index 477
-- Unknown AppIntent identifier at index 498: com.apple.mobilenotes.CreateChecklistItemLinkAction
-- Action identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 531: is.workflow.actions.filter.notes. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 1236: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
-- Notes create action missing title/name parameter at index 1236
+- Unknown AppIntent identifier at index 499: com.apple.mobilenotes.CreateChecklistItemLinkAction
+- Action identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 532: is.workflow.actions.filter.notes. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- AppIntent identifier requires macOS-only (toolkit-v78); target platform is iOS/iPadOS at index 1237: com.apple.mobilenotes.SharingExtension. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
+- Notes create action missing title/name parameter at index 1237

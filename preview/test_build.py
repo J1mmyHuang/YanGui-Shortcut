@@ -70,10 +70,11 @@ class BuildContractTests(unittest.TestCase):
         for needle in ['calendar.create','reminder.create','note.create','拆成互相独立的事项','一律用 note.create',
                        '提醒我下午3点有会议','会议本身也归日历','日期按今天','不要带时区偏移','checklist=true','只写条目文字','下一个整点','当天 09:00']:
             self.assertIn(needle,prompt)
-        for needle in ['判定顺序','必须用 calendar.create 并填好 start 和 end','不单独成项','我今天下午两点有一个会']:
+        for needle in ['判定顺序','必须用 calendar.create 并填好 start 和 end','不单独成项','我今天下午两点有一个会',
+                       '两样及以上','只买或只带一样东西时用 reminder.create','超市购物清单']:
             self.assertIn(needle,prompt)
         examples=[line for line in prompt.splitlines() if line.startswith('{"operations"')]
-        self.assertEqual(len(examples),4)  # the format line and three examples
+        self.assertEqual(len(examples),5)  # the format line and four examples
         for line in examples:
             self.assertTrue(self.matches(line),line)
         self.assertNotIn('☐',prompt)
@@ -162,7 +163,9 @@ class BuildContractTests(unittest.TestCase):
                  if a['WFWorkflowActionIdentifier']=='is.workflow.actions.dictatetext']
         self.assertEqual(len(dictate),1)
         self.assertEqual(dictate[0]['WFSpeechLanguage'],'zh-CN')
-        self.assertEqual(dictate[0]['WFDictateTextStopListening'],'On Tap')
+        # The Action Button cannot stop Dictate Text (its only choices are After Pause, After Short Pause and On Tap),
+        # so dictation ends by itself after a pause.
+        self.assertEqual(dictate[0]['WFDictateTextStopListening'],'After Pause')
         posts=[n for n,a in enumerate(MOD.build()['WFWorkflowActions'])
                if a['WFWorkflowActionIdentifier']=='is.workflow.actions.downloadurl'
                and a['WFWorkflowActionParameters']['WFHTTPMethod']=='POST']
