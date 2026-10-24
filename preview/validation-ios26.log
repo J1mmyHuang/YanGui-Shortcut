@@ -1,7 +1,7 @@
 Validation failed:
 
 First failing action: index 0 (is.workflow.actions.comment)
-Snippet: {'UUID': 'C2FAE21E-ECB9-4CCD-A9D9-29BCBACB5D2E', 'WFCommentActionText': '这是一个免费的开源软件。如果通过任何付费渠道下载，请认准我们的这个仓库：https://github.com/J1mmyHuang/ShanNian-Shortcut\n许可：AGPL-3.0-or-later；Copyright (C) 2026 J1mmyHuang。\n\n闪念：按一下操作按钮，直接说话 → 说完停一下自...
+Snippet: {'UUID': 'C2FAE21E-ECB9-4CCD-A9D9-29BCBACB5D2E', 'WFCommentActionText': '这是一个免费的开源软件。如果通过任何付费渠道下载，请认准我们的这个仓库：https://github.com/J1mmyHuang/YanGui-Shortcut\n许可：AGPL-3.0-or-later；Copyright (C) 2026 J1mmyHuang。\n\n言归：按一下操作按钮，直接说话 → 说完停一下自动结...
 
 - Action identifier requires macOS 27+ (toolkit-v78) at index 0: is.workflow.actions.comment. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.
 - Action identifier requires macOS 27+ (toolkit-v78) at index 1: is.workflow.actions.comment. Set --target-macos 27 only for Golden Gate-only IDs, or --target-platform ios/all only when intentionally targeting iOS/iPadOS metadata.

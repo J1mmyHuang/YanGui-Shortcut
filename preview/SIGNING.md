@@ -1,6 +1,6 @@
 # 测试版签名与隐私
 
-`ShanNian.shortcut` 由开发者本机 Mac 上的 Apple `shortcuts sign` 生成，使用 Shortcuts Playground 1.2.1 的归档/签名脚本，模式为 `anyone`。它是用于分发的真实签名文件，不是把 XML 改名得到的文件。文件大小、SHA-256 和源 XML 摘要见 `build-manifest.json`。
+`YanGui.shortcut` 由开发者本机 Mac 上的 Apple `shortcuts sign` 生成，使用 Shortcuts Playground 1.2.1 的归档/签名脚本，模式为 `anyone`。它是用于分发的真实签名文件，不是把 XML 改名得到的文件。文件大小、SHA-256 和源 XML 摘要见 `build-manifest.json`。
 
 ## 本机发起、Apple 验证
 
@@ -25,8 +25,8 @@ Apple 官方文档说明：签名时 Apple 会收到快捷指令副本以进行�
 修改 XML 后，原来的签名文件不会自动更新。先重新检查，再在已配置 Apple Account 的 Mac 上重新签名，例如：
 
 ```sh
-cp preview/ShanNian.xml dist/ShanNian-sign-input.shortcut
-shortcuts sign --mode anyone --input dist/ShanNian-sign-input.shortcut --output dist/ShanNian.shortcut
+cp preview/YanGui.xml dist/YanGui-sign-input.shortcut
+shortcuts sign --mode anyone --input dist/YanGui-sign-input.shortcut --output dist/YanGui.shortcut
 ```
 
 输入文件需要 `.shortcut` 扩展名和同名文件名，并在沙箱外执行。重新核对文件非空、更新摘要并测试 iPhone 导入。含真实 Key 的快捷指令先清空配置，再上传至仓库或提交给 Apple 的签名服务。

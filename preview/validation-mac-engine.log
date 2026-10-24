@@ -1,4 +1,4 @@
-闪念 Mac Shortcuts 引擎实测记录
+言归 Mac Shortcuts 引擎实测记录（项目原名「闪念」；以下保留当时的名称、文件名和测试条目标题）
 日期：2026-10-20（Australia/Melbourne），macOS 26（Darwin 25.6.0），shortcuts run 驱动
 被测：python3 preview/build_shannian.py --test 生成的测试版（dist/ShanNian-Test.xml，shortcuts sign --mode anyone 签名后由用户导入）
 测试版：无导入问题，配置为占位值；输入 `probeN|||…` 只运行探针；输入 `阶段|||回复JSON|||原话` 时用给定回复，不发请求

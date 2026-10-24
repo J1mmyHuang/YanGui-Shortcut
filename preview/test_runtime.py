@@ -5,7 +5,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).parent))
-from build_shannian import build
+from build_yangui import build
 
 try:
     from offline_runtime import OfflineRuntime, OfflineExternalError
@@ -48,11 +48,11 @@ def models(*ids, key='data'):
 
 
 def targets(runtime):
-    return [w for w in runtime.writes if not w.get('title', '').startswith('闪念原话')]
+    return [w for w in runtime.writes if not w.get('title', '').startswith('言归原话')]
 
 
 def saved_transcripts(runtime):
-    return [w for w in runtime.writes if w.get('title', '').startswith('闪念原话')]
+    return [w for w in runtime.writes if w.get('title', '').startswith('言归原话')]
 
 
 class RuntimeCase(unittest.TestCase):
@@ -226,7 +226,7 @@ class GeneratedRuntimeTests(RuntimeCase):
 
     def test_empty_title_gets_a_timestamp_title(self):
         rt = self.execute([response(operation('note.create', title='', body='只有内容'))])
-        self.assertTrue(targets(rt)[0]['title'].startswith('闪念 · 2026-10-20T12:00:00'))
+        self.assertTrue(targets(rt)[0]['title'].startswith('言归 · 2026-10-20T12:00:00'))
 
     def test_reminder_search_defaults_to_incomplete_and_filters_title(self):
         rt = self.execute([response(operation('reminder.search', query='买'))], records={'reminders': [
@@ -306,7 +306,7 @@ class GeneratedRuntimeTests(RuntimeCase):
     def test_backup_switch_saves_transcript_before_network_without_duplicates(self):
         rt = self.execute([response(operation())], backup='是')
         self.assertEqual(len(saved_transcripts(rt)), 1)
-        self.assertEqual(rt.writes[0]['title'][:4], '闪念原话')
+        self.assertEqual(rt.writes[0]['title'][:4], '言归原话')
         self.assertEqual(len(targets(rt)), 1)
         rt = self.execute([{'error': {'message': 'synthetic'}}], backup='是')
         self.assertEqual(len(saved_transcripts(rt)), 1)

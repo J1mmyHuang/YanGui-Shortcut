@@ -6,9 +6,9 @@ import re
 import unittest
 
 ROOT = Path(__file__).parent
-SPEC = importlib.util.spec_from_file_location('build_shannian', ROOT / 'build_shannian.py')
+SPEC = importlib.util.spec_from_file_location('build_yangui', ROOT / 'build_yangui.py')
 MOD = None
-if (ROOT / 'build_shannian.py').exists():
+if (ROOT / 'build_yangui.py').exists():
     MOD = importlib.util.module_from_spec(SPEC)
     SPEC.loader.exec_module(MOD)
 

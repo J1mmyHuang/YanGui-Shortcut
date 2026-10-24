@@ -1,4 +1,4 @@
-name: Check and rebuild ShanNian
+name: Check and rebuild YanGui
 
 on:
   push:
@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: shannian-build
+  group: yangui-build
   cancel-in-progress: false
 
 jobs:
@@ -34,7 +34,7 @@ jobs:
       - name: Check existing preview
         if: hashFiles('preview/test_build.py') != ''
         run: |
-          python3 ci/validate_plist.py preview/ShanNian.xml
+          python3 ci/validate_plist.py preview/YanGui.xml
           python3 -m unittest discover -s preview -p 'test_*.py' -v
 
   build-source:
@@ -49,10 +49,10 @@ jobs:
       - name: Prepare source output
         run: |
           mkdir -p dist
-          if [ -f preview/build_shannian.py ]; then
-            python3 preview/build_shannian.py
-            python3 ci/validate_plist.py preview/ShanNian.xml
-            cp preview/ShanNian.xml dist/ShanNian.xml
+          if [ -f preview/build_yangui.py ]; then
+            python3 preview/build_yangui.py
+            python3 ci/validate_plist.py preview/YanGui.xml
+            cp preview/YanGui.xml dist/YanGui.xml
             cp preview/FEATURES.md dist/FEATURES.md
             printf '%s\n' 'Unsigned XML rebuilt. Apple signing and iPhone testing must be completed separately; see LOCAL_BUILD.md.' > dist/RESULT.txt
           else
@@ -62,7 +62,7 @@ jobs:
           if [ -f LICENSE ]; then cp LICENSE dist/LICENSE; fi
       - uses: actions/upload-artifact@v4
         with:
-          name: ShanNian-build-source
+          name: YanGui-build-source
           path: dist/
           if-no-files-found: error
           retention-days: 14

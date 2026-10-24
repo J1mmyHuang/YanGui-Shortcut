@@ -1,15 +1,15 @@
 {
-  "workflow_name": "闪念",
+  "workflow_name": "言归",
   "action_count": 1252,
-  "xml_bytes": 892850,
-  "xml_sha256": "a3be60cd7f03046457a3cd989ee798037bee7fe482495881f9ba29aea49a98f4",
+  "xml_bytes": 892848,
+  "xml_sha256": "49095e1a1d6aae6eef4a21becb8e8144fb597868ba4e65f5d3d01ee3f2dcfdbf",
   "plugin_version": "1.2.1",
   "target": "iOS 27 (macOS 26 cross-check)",
   "full_plugin_validation": "FAILED (known false positives against a real iPhone export): 19 Create Note 'missing title/name' (iPhone export has only WFCreateNoteInput); 1 unknown AppIntent id com.apple.mobilenotes.CreateChecklistItemLinkAction (plugin knows only com.apple.Notes.*); 3 empty-text findings are the import-question targets (golden example 6a18b76843ac45c384ac3400f3740997 triggers the same check)",
   "real_device_tests": "user's iPhone: full flow works; a second Action Button press does not stop dictation, so dictation now ends After Pause; the After Pause build ends dictation by itself and leaves no Live Activity in the Dynamic Island. The shopping-list prompt change is not yet tested on the iPhone",
   "live_api_tests": "openai protocol through the Mac test variant (config passed at run time) and classification via curl, both with the user's own model",
-  "signed_bytes": 119539,
-  "signed_sha256": "be79a15a033bd92cdc7f7c81763ac5c0c3138358560accee73b7029239a0117f",
+  "signed_bytes": 119865,
+  "signed_sha256": "35fb188817b2ee03c74e1b3b40d4aaa59438b68bb338b1854c736bb3e89b6c58",
   "signed_magic": "AEA1",
   "signing_mode": "anyone",
   "offline_tests": {
@@ -19,8 +19,8 @@
   },
   "plistlib": "PASS",
   "plutil": "PASS",
-  "source": "ShanNian.xml",
-  "signed": "ShanNian.shortcut",
+  "source": "YanGui.xml",
+  "signed": "YanGui.shortcut",
   "build_status": "preview: Mac engine scenarios pass including real Notes and checklists; Notes plugin validation unresolved; iPhone untested",
   "signed_authentication_keys": [
     "SigningCertificateChain"
@@ -38,7 +38,7 @@
   "mac_engine_tests": {
     "log": "validation-mac-engine.log",
     "date": "2026-10-20",
-    "engine": "macOS 26 Shortcuts (shortcuts run), test variant from build_shannian.py --test",
+    "engine": "macOS 26 Shortcuts (shortcuts run), test variant from build_yangui.py --test",
     "passed": [
       "note.create with real Notes actions (--real-notes)",
       "note.create checklist: 4 checkable items confirmed in the Notes app",
