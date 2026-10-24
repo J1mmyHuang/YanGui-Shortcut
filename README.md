@@ -1,4 +1,4 @@
-# 言归 · YanGui Shortcut
+# YanGui Shortcut
 
 一个基于 iPhone Action Button 的中文语音记事助手：按一下，直接说话，说完停一下就自动结束。AI 自动把你说的话分成多个事项，并归入 Apple 原生的**备忘录、提醒事项和日历**。真正的创建和查询由设备上的快捷指令动作完成。
 
@@ -21,7 +21,7 @@
 
 1. 打开文件后，快捷指令 App 依次询问 **API 协议、Base URL、API Key、模型 ID**。协议填 `openai`（OpenAI compatible）或 `anthropic`（Anthropic compatible）；模型 ID 可以留空，运行时从服务的 `/models` 列表里选。这四项也是快捷指令最前面的四个文本动作，之后点开即可修改。
 2. 审查动作后添加，先在快捷指令 App 里运行一次，按系统提示授予麦克风、备忘录、日历、提醒事项等权限。
-3. 到「设置 → 操作按钮 → 快捷指令」选这条快捷指令绑定。导入后的名称取自文件名，显示为「YanGui」，可在快捷指令 App 里改名为「言归」。
+3. 到「设置 → 操作按钮 → 快捷指令」选这条快捷指令绑定。导入后的名称为「YanGui」。
 4. 按一下操作按钮，直接说话；说完停顿一下，听写自动结束。通知会汇总每一项记到了哪里。
 
 这个入口省去本地构建与签名，仍需自己的 API 配置和设备授权。当前是实验性测试版，已知限制见 [FEATURES.md](preview/FEATURES.md)。
@@ -49,8 +49,8 @@
 将仓库交给 Agent，并发送：
 
 ```text
-读取并执行 ci/BUILD_LOCAL_PROMPT.md，结合 spec/言归_Shortcuts_构建规格.md
-和 Shortcuts Playground 的动作资料与验证工具，构建、验证并签名「言归」。
+读取并执行 ci/BUILD_LOCAL_PROMPT.md，结合 spec/YanGui_Shortcuts_构建规格.md
+和 Shortcuts Playground 的动作资料与验证工具，构建、验证并签名「YanGui」。
 优先复用 preview/ 中已有实现，保留已知限制的记录。
 不要写入真实 API Key，不要宣称已经通过未执行的 iPhone 测试。
 ```
@@ -69,13 +69,13 @@
 
 - **API Key**：在添加快捷指令时填写，保存在你自己的这条快捷指令里，可能随 iCloud 同步。仓库里的文件三项配置为空；分享、导出或上传自己的快捷指令之前先清空这三项。
 - **发送给模型的数据**：原话、设备当地时间和时区；认证 Key 发送到同一自选 API 提供方。查得的本机笔记、日历和提醒记录仅在本机展示。
-- **原话保护**：API 返回错误或内容不合格式时，原话自动存成备忘录「言归原话（未处理）」。配置里的「原话备份」改为 `是` 后，每次联网前先存一份，网络直接中断时也能找回。
+- **原话保护**：API 返回错误或内容不合格式时，原话自动存成备忘录「YanGui 原话（未处理）」。配置里的「原话备份」改为 `是` 后，每次联网前先存一份，网络直接中断时也能找回。
 - **Apple 签名**：本机发起 `anyone` 签名，Apple 会收到快捷指令副本验证。公开证书中有不透明标识，不应将签名视为匿名发布或功能安全认证。详见[签名说明](preview/SIGNING.md)。
 - **构建产物**：源码、签名快照及摘要在 `preview/`；面向使用者的发布文件在 GitHub Releases；临时输出放在被 Git 忽略的 `dist/`。不要提交真实密钥、Apple 登录凭据或个人应用数据。
 
 ## 相关文件
 
-- [功能规格](spec/言归_Shortcuts_构建规格.md)
+- [功能规格](spec/YanGui_Shortcuts_构建规格.md)
 - [本地构建指南](LOCAL_BUILD.md)与[通用 Agent 构建任务](ci/BUILD_LOCAL_PROMPT.md)
 - [源 XML](preview/YanGui.xml)、[生成器](preview/build_yangui.py)、[构建摘要](preview/build-manifest.json)、[Mac 引擎实测记录](preview/validation-mac-engine.log)
 - [Shortcuts Playground](https://github.com/viticci/shortcuts-playground-plugin)

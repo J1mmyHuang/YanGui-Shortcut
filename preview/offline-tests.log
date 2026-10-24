@@ -89,6 +89,6 @@ test_provider_error_text_is_shown_without_leaking_the_key (test_runtime.Protocol
 test_unexpected_reply_shows_the_start_of_the_response (test_runtime.ProtocolAndModelTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 89 tests in 2.390s
+Ran 89 tests in 2.530s
 
 OK

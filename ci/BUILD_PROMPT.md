@@ -1,15 +1,15 @@
-# Task: Build YanGui (言归) for iOS Shortcuts
+# Task: Build YanGui for iOS Shortcuts
 
 You are an AI coding agent with repository file access and terminal tools. Use your configured model service. Produce an actual, portable XML Apple Shortcuts plist at **dist/YanGui.xml**. Do not produce pseudocode, rename an unsigned XML to .shortcut, or claim real iPhone testing.
 
 Read:
-- spec/言归_Shortcuts_构建规格.md (user requirements)
+- spec/YanGui_Shortcuts_构建规格.md (user requirements)
 - Locate the Shortcuts Playground skill directory containing SKILL.md in the available plugin or reference checkout, and read that file (mandatory).
 - Relevant docs and action schemas in that skill, especially PLIST_FORMAT.md, ACTIONS.md, APPINTENTS.md, VARIABLES.md, FILTERS.md, CONTROL_FLOW.md, DATE_TIME.md, and BEST_PRACTICES.md.
 - Its golden-shortcuts/index.jsonl and any directly relevant example XMLs.
 
 Goal:
-- One iPhone Action Button compatible shortcut called 言归.
+- One iPhone Action Button compatible shortcut called YanGui.
 - One press of the Action Button starts Dictate Text (Chinese) directly; parse the Chinese natural language and split it into independent items.
 - BYOK with a user-selected protocol, OpenAI-compatible Chat Completions or Anthropic-compatible Messages: protocol, base URL, API key and model name asked as import questions and held in four Text actions at the top of the shortcut; a blank model is chosen from the service's /models list. Encode request bodies with the WFItemType codes of real exports (0 text, 1 dictionary, 2 array, 3 number, 4 boolean). Keep them blank in the repository; never hardcode real credentials.
 - Allow exactly six genuine native iOS operations: note.create, note.search, calendar.create, calendar.search, reminder.create, reminder.search. The AI classifies each item into Notes, Reminders or Calendar.

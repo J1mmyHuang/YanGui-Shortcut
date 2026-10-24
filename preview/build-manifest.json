@@ -1,15 +1,15 @@
 {
-  "workflow_name": "言归",
+  "workflow_name": "YanGui",
   "action_count": 1252,
-  "xml_bytes": 892848,
-  "xml_sha256": "49095e1a1d6aae6eef4a21becb8e8144fb597868ba4e65f5d3d01ee3f2dcfdbf",
+  "xml_bytes": 892883,
+  "xml_sha256": "24873130a9846a23ee1fd7ceda7151dbd78cebde82927f32368c582c3d2598a5",
   "plugin_version": "1.2.1",
   "target": "iOS 27 (macOS 26 cross-check)",
   "full_plugin_validation": "FAILED (known false positives against a real iPhone export): 19 Create Note 'missing title/name' (iPhone export has only WFCreateNoteInput); 1 unknown AppIntent id com.apple.mobilenotes.CreateChecklistItemLinkAction (plugin knows only com.apple.Notes.*); 3 empty-text findings are the import-question targets (golden example 6a18b76843ac45c384ac3400f3740997 triggers the same check)",
   "real_device_tests": "user's iPhone: full flow works (Action Button dictation ending after a pause, one utterance split across Calendar, Reminders and Notes, grocery checklist); a second Action Button press does not stop dictation; no Live Activity left in the Dynamic Island with After Pause. Not tested on the iPhone: anthropic protocol, /models picker, searches",
   "live_api_tests": "openai protocol through the Mac test variant (config passed at run time) and classification via curl, both with the user's own model",
-  "signed_bytes": 119865,
-  "signed_sha256": "35fb188817b2ee03c74e1b3b40d4aaa59438b68bb338b1854c736bb3e89b6c58",
+  "signed_bytes": 119854,
+  "signed_sha256": "5eed13ec4582b97d358665d2efd3e5a2bf171c72f4e35041388064ece9b8a11b",
   "signed_magic": "AEA1",
   "signing_mode": "anyone",
   "offline_tests": {
@@ -60,10 +60,10 @@
     ]
   },
   "release": {
-    "tag": "v0.2.0-preview.1",
+    "tag": "v0.2.0-preview.2",
     "assets": [
       "YanGui.shortcut",
-      "YanGui-v0.2.0-preview.1.zip",
+      "YanGui-v0.2.0-preview.2.zip",
       "SHA256SUMS.txt"
     ],
     "package": "git archive of the tag"

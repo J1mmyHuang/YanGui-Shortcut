@@ -7,7 +7,7 @@ def main():
         "README.md",
         "ci/BUILD_PROMPT.md",
         "ci/validate_plist.py",
-        "spec/言归_Shortcuts_构建规格.md",
+        "spec/YanGui_Shortcuts_构建规格.md",
         ".github/workflows/build-shortcut.yml",
     ]
     for filename in files:

@@ -1,15 +1,15 @@
-# Local macOS AI-agent task: iOS Shortcut 言归
+# Local macOS AI-agent task: iOS Shortcut YanGui
 
 You are an AI coding agent running **locally on the user's Mac**, with permission to read/write this repository and execute terminal commands. Use the agent's existing configured model and authentication. Do not request or create a GitHub Actions API secret. Runtime BYOK on iPhone is configured separately by the recipient. The user wants a real iOS shortcut, not an implementation plan.
 
 Locate the Shortcuts Playground skill directory containing `SKILL.md` and `scripts/` through the agent's available plugin or a checkout under `.ci-tools/shortcuts-playground/`. Read its reference files and execute its scripts directly. If the reference is unavailable, report that missing dependency. Start from `preview/`'s existing generator, tests, and recorded Notes compatibility failures when practical; do not claim these are already resolved.
 
 Read fully:
-1. `spec/言归_Shortcuts_构建规格.md` (the complete requirements)
+1. `spec/YanGui_Shortcuts_构建规格.md` (the complete requirements)
 2. the available Shortcuts Playground reference's `SKILL.md`, `PLIST_FORMAT.md`, `ACTIONS.md`, `APPINTENTS.md`, `VARIABLES.md`, `CONTROL_FLOW.md`, `FILTERS.md`, `DATE_TIME.md`, `BEST_PRACTICES.md` and directly relevant golden examples. Record the reference version used.
 3. `LOCAL_BUILD.md` for deliverable expectations.
 
-Build one iPhone/iOS Shortcut called **言归**, using Apple native Notes, Calendar and Reminders and ONLY these six allowed operations:
+Build one iPhone/iOS Shortcut called **YanGui**, using Apple native Notes, Calendar and Reminders and ONLY these six allowed operations:
 - note.create / note.search
 - calendar.create / calendar.search
 - reminder.create / reminder.search

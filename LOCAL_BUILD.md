@@ -1,4 +1,4 @@
-# 本地构建「言归」
+# 本地构建「YanGui」
 
 只想试用时，可直接下载 [GitHub Releases](https://github.com/J1mmyHuang/YanGui-Shortcut/releases/latest) 中的已签名测试版（与仓库中的 `preview/YanGui.shortcut` 相同），无需安装 AI Agent 或准备 Mac。当前 Notes 兼容性等限制仍然存在，详见 [FEATURES.md](preview/FEATURES.md)。
 
@@ -64,8 +64,8 @@ git clone https://github.com/viticci/shortcuts-playground-plugin.git .ci-tools/s
 给 Agent 发送：
 
 ```text
-读取并执行 ci/BUILD_LOCAL_PROMPT.md，依据 spec/言归_Shortcuts_构建规格.md
-以及 Shortcuts Playground 的资料，构建、验证并签名「言归」。
+读取并执行 ci/BUILD_LOCAL_PROMPT.md，依据 spec/YanGui_Shortcuts_构建规格.md
+以及 Shortcuts Playground 的资料，构建、验证并签名「YanGui」。
 优先复用 preview/ 中的生成器和测试，核对已有未解决问题。
 请报告实际运行的检查、每项能力的状态和所有未验证内容。
 不要把真实 API Key 写入仓库或快捷指令，不要读取个人应用数据库来猜动作格式。
@@ -105,6 +105,6 @@ python3 ci/run_mac_test.py YanGui-Test "测试：今天下午两点有个会"
 
 ## 导入和测试
 
-通过隔空投送或 iCloud Drive 在 iPhone 打开已签名 `.shortcut`，依次填写 API 协议、Base URL、API Key、模型 ID，审查动作后导入。先在快捷指令 App 里运行，测试 Notes、Calendar、Reminders 的创建和查询，核对权限与日期。确认后在「设置 → 操作按钮 → 快捷指令 → 言归」绑定，按一下说话，说完点按完成。
+通过隔空投送或 iCloud Drive 在 iPhone 打开已签名 `.shortcut`，依次填写 API 协议、Base URL、API Key、模型 ID，审查动作后导入。先在快捷指令 App 里运行，测试 Notes、Calendar、Reminders 的创建和查询，核对权限与日期。确认后在「设置 → 操作按钮 → 快捷指令 → YanGui」绑定，按一下说话，说完点按完成。
 
 遇到未知动作或导入错误时，将具体错误反馈给维护者或你的 Agent。静态结构检查、离线测试和签名都不能代替 iPhone 实测。

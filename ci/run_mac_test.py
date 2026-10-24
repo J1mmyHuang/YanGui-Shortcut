@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""在 Mac 上运行已导入的「言归测试」快捷指令：把原话作为快捷指令输入，打印它的输出和系统报错。
+"""在 Mac 上运行已导入的「YanGui 测试」快捷指令：把原话作为快捷指令输入，打印它的输出和系统报错。
 
 用法：run_mac_test.py [--config 配置文件] 快捷指令名 "原话" [超时秒数]
 --config：本次运行用的接口配置，文件格式为四组两行（API Protocol / API Base URL / API Key / API Model，下一行是值）。
