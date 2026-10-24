@@ -17,7 +17,7 @@
 
 ## 免构建试用
 
-从 [GitHub Releases](https://github.com/J1mmyHuang/YanGui-Shortcut/releases/latest) 下载 `YanGui.shortcut`（与仓库中的 [preview/YanGui.shortcut](preview/YanGui.shortcut) 相同），通过隔空投送或 iCloud Drive 在 iPhone 打开。私有仓库的下载需要相应访问权限。
+从 [GitHub Releases](https://github.com/J1mmyHuang/YanGui-Shortcut/releases/latest) 下载 `YanGui.shortcut`（与仓库中的 [preview/YanGui.shortcut](preview/YanGui.shortcut) 相同），通过隔空投送或 iCloud Drive 在 iPhone 打开。
 
 1. 打开文件后，快捷指令 App 依次询问 **API 协议、Base URL、API Key、模型 ID**。协议填 `openai`（OpenAI compatible）或 `anthropic`（Anthropic compatible）；模型 ID 可以留空，运行时从服务的 `/models` 列表里选。这四项也是快捷指令最前面的四个文本动作，之后点开即可修改。
 2. 审查动作后添加，先在快捷指令 App 里运行一次，按系统提示授予麦克风、备忘录、日历、提醒事项等权限。

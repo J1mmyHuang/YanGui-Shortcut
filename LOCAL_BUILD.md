@@ -14,7 +14,7 @@
    shortcuts --help
    ```
 
-3. 克隆仓库并进入目录；私有仓库需要先取得 GitHub 访问权限：
+3. 克隆仓库并进入目录：
 
    ```sh
    git clone https://github.com/J1mmyHuang/YanGui-Shortcut.git
