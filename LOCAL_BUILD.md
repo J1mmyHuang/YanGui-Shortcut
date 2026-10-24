@@ -1,6 +1,6 @@
 # 本地构建「言归」
 
-只想试用时，可直接下载仓库中的[已签名测试版](preview/YanGui.shortcut)，无需安装 AI Agent 或准备 Mac。当前 Notes 兼容性等限制仍然存在，详见 [FEATURES.md](preview/FEATURES.md)。
+只想试用时，可直接下载 [GitHub Releases](https://github.com/J1mmyHuang/YanGui-Shortcut/releases/latest) 中的已签名测试版（与仓库中的 `preview/YanGui.shortcut` 相同），无需安装 AI Agent 或准备 Mac。当前 Notes 兼容性等限制仍然存在，详见 [FEATURES.md](preview/FEATURES.md)。
 
 本指南提供两条本地路线：使用现有 Python 生成器重建快照，或让你选择的 AI 编码 Agent 继续完善。选择具备文件和终端能力的 AI Agent 即可；最终 Apple 签名需要 Mac。
 

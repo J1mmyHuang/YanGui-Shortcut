@@ -4,27 +4,27 @@
 
 **官方版本免费提供。** 官方仓库：[J1mmyHuang/YanGui-Shortcut](https://github.com/J1mmyHuang/YanGui-Shortcut)。
 
-> **当前为实验性测试版。** 已生成 Apple 签名文件，89 项离线测试通过；在 Mac 的 Shortcuts 引擎上实测了备忘录与可勾选的清单（真实写入备忘录 App）、备忘录查询、日历（有时间、全天）、提醒（带时刻、仅日期、模糊时间），以及经真实 API 把一句话里的三件事分别写入日历、提醒事项和备忘录，不再出现「请为此操作中的每个参数选取值」（[实测记录](preview/validation-mac-engine.log)）。尚未完成 iPhone 实测，Notes 动作仍未通过插件校验。请先阅读[功能与限制](preview/FEATURES.md)。
+> **当前为实验性测试版。** 已生成 Apple 签名文件，89 项离线测试通过；在 Mac 的 Shortcuts 引擎上实测了备忘录与可勾选的清单（真实写入备忘录 App）、备忘录查询、日历（有时间、全天）、提醒（带时刻、仅日期、模糊时间），以及经真实 API 把一句话里的三件事分别写入日历、提醒事项和备忘录，不再出现「请为此操作中的每个参数选取值」（[实测记录](preview/validation-mac-engine.log)）。作者已在 iPhone 上跑通整条流程（操作按钮听写、一句话多件事分别写入三个 App、购物清单）；Notes 动作在插件校验中仍有已知误报。请先阅读[功能与限制](preview/FEATURES.md)。
 
 ## 选择使用方式
 
 | 你想做什么 | 入口 | 需要什么 |
 | --- | --- | --- |
-| 下载后直接试用 | [仓库中的已签名 YanGui.shortcut](preview/YanGui.shortcut) | iPhone，以及自己选择的模型服务的 API 协议、Base URL、API Key、模型 ID；无需 AI Agent 或重新构建 |
+| 下载后直接试用 | [Releases 中的已签名 YanGui.shortcut](https://github.com/J1mmyHuang/YanGui-Shortcut/releases/latest) | iPhone，以及自己选择的模型服务的 API 协议、Base URL、API Key、模型 ID；无需 AI Agent 或重新构建 |
 | 审阅或重建现有测试版 | [本地构建指南](LOCAL_BUILD.md) | Python 3.10+；重新签名需要 Mac |
 | 让 AI Agent 修改或继续完善 | [通用构建任务](ci/BUILD_LOCAL_PROMPT.md) | 能读写仓库、运行终端的代码 Agent；动作资料与验证工具；签名需要 Mac |
 | 在 GitHub 上检查和重建 | [Actions 构建页面](https://github.com/J1mmyHuang/YanGui-Shortcut/actions/workflows/build-shortcut.yml) | 使用已有生成器输出源 XML，无需模型构建密钥；签名在 Mac 完成 |
 
 ## 免构建试用
 
-下载[已签名测试版](preview/YanGui.shortcut)，通过隔空投送或 iCloud Drive 在 iPhone 打开。GitHub Releases 的 [v0.1.0-preview.1](https://github.com/J1mmyHuang/YanGui-Shortcut/releases/tag/v0.1.0-preview.1) 是上一版，流程不同；新版发布后这里改为发布页。私有仓库的下载需要相应访问权限。
+从 [GitHub Releases](https://github.com/J1mmyHuang/YanGui-Shortcut/releases/latest) 下载 `YanGui.shortcut`（与仓库中的 [preview/YanGui.shortcut](preview/YanGui.shortcut) 相同），通过隔空投送或 iCloud Drive 在 iPhone 打开。私有仓库的下载需要相应访问权限。
 
 1. 打开文件后，快捷指令 App 依次询问 **API 协议、Base URL、API Key、模型 ID**。协议填 `openai`（OpenAI compatible）或 `anthropic`（Anthropic compatible）；模型 ID 可以留空，运行时从服务的 `/models` 列表里选。这四项也是快捷指令最前面的四个文本动作，之后点开即可修改。
 2. 审查动作后添加，先在快捷指令 App 里运行一次，按系统提示授予麦克风、备忘录、日历、提醒事项等权限。
-3. 到「设置 → 操作按钮 → 快捷指令 → 言归」绑定。
+3. 到「设置 → 操作按钮 → 快捷指令」选这条快捷指令绑定。导入后的名称取自文件名，显示为「YanGui」，可在快捷指令 App 里改名为「言归」。
 4. 按一下操作按钮，直接说话；说完停顿一下，听写自动结束。通知会汇总每一项记到了哪里。
 
-这个入口省去本地构建与签名，但仍需 API 配置、设备授权和实测；当前不是已经验证可靠的开箱即用正式版。
+这个入口省去本地构建与签名，仍需自己的 API 配置和设备授权。当前是实验性测试版，已知限制见 [FEATURES.md](preview/FEATURES.md)。
 
 下载版顶部含一条「注释」，标明软件免费开源和官方仓库。它供打开编辑器时查看，运行时不弹窗，也不发送给模型。
 

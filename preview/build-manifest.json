@@ -6,7 +6,7 @@
   "plugin_version": "1.2.1",
   "target": "iOS 27 (macOS 26 cross-check)",
   "full_plugin_validation": "FAILED (known false positives against a real iPhone export): 19 Create Note 'missing title/name' (iPhone export has only WFCreateNoteInput); 1 unknown AppIntent id com.apple.mobilenotes.CreateChecklistItemLinkAction (plugin knows only com.apple.Notes.*); 3 empty-text findings are the import-question targets (golden example 6a18b76843ac45c384ac3400f3740997 triggers the same check)",
-  "real_device_tests": "user's iPhone: full flow works; a second Action Button press does not stop dictation, so dictation now ends After Pause; the After Pause build ends dictation by itself and leaves no Live Activity in the Dynamic Island. The shopping-list prompt change is not yet tested on the iPhone",
+  "real_device_tests": "user's iPhone: full flow works (Action Button dictation ending after a pause, one utterance split across Calendar, Reminders and Notes, grocery checklist); a second Action Button press does not stop dictation; no Live Activity left in the Dynamic Island with After Pause. Not tested on the iPhone: anthropic protocol, /models picker, searches",
   "live_api_tests": "openai protocol through the Mac test variant (config passed at run time) and classification via curl, both with the user's own model",
   "signed_bytes": 119865,
   "signed_sha256": "35fb188817b2ee03c74e1b3b40d4aaa59438b68bb338b1854c736bb3e89b6c58",
@@ -58,5 +58,14 @@
       "/models picker",
       "dictation and Action Button"
     ]
+  },
+  "release": {
+    "tag": "v0.2.0-preview.1",
+    "assets": [
+      "YanGui.shortcut",
+      "YanGui-v0.2.0-preview.1.zip",
+      "SHA256SUMS.txt"
+    ],
+    "package": "git archive of the tag"
   }
 }
